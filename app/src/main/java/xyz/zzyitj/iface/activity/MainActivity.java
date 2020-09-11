@@ -6,13 +6,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import com.google.gson.Gson;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
+import org.jetbrains.annotations.NotNull;
 import xyz.zzyitj.iface.IFaceApplication;
 import xyz.zzyitj.iface.R;
-import xyz.zzyitj.iface.api.ApiConst;
 import xyz.zzyitj.iface.api.AuthService;
 import xyz.zzyitj.iface.api.FaceService;
 import xyz.zzyitj.iface.model.ApiFaceUserAddDo;
-import xyz.zzyitj.iface.model.Server;
+import xyz.zzyitj.iface.model.ApiTokenDto;
+
+import java.io.IOException;
+import java.util.Objects;
 
 /**
  * @author intent
@@ -43,25 +50,25 @@ public class MainActivity extends AppCompatActivity {
             userAddDo.setImage("http://viapi-test.oss-cn-shanghai.aliyuncs.com/%E4%BA%BA%E8%84%B81%E6%AF%941.png");
             userAddDo.setGroupId("admin");
             userAddDo.setUid("a_qwrgqwf");
-            FaceService.addUser(IFaceApplication.instance.getServer(), IFaceApplication.instance.getApiToken(), userAddDo)
-                    .subscribe(apiResponseBody -> {
-                        Log.d(TAG, apiResponseBody.toString());
-                    }, throwable -> {
-                        Log.e(TAG, "add user error.", throwable);
+            FaceService.addUser(IFaceApplication.instance.getApiToken(), userAddDo)
+                    .enqueue(new Callback() {
+                        @Override
+                        public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                            Log.e(TAG, "add user error.", e);
+                        }
+
+                        @Override
+                        public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                            Log.d(TAG, Objects.requireNonNull(response.body()).string());
+                        }
                     });
         });
     }
 
     /**
      * 初始化函数
-     * 1、初始化ApiServer
      */
     private void init() {
-        Server server = new Server();
-        server.setHost(ApiConst.HOST);
-        server.setPort(80);
-        server.setHttps(true);
-        IFaceApplication.instance.setServer(server);
     }
 
     /**
@@ -69,20 +76,27 @@ public class MainActivity extends AppCompatActivity {
      */
     private void initToken() {
         if (IFaceApplication.instance.getApiToken() == null) {
-            AuthService.getToken(IFaceApplication.instance.getServer())
-                    .subscribe(token -> {
-                        Log.d(TAG, token.toString());
-                        if (token.getAccessToken() != null) {
-                            IFaceApplication.instance.setApiToken(token);
-                        } else {
-                            Toast.makeText(MainActivity.this,
-                                    "token cannot be null.", Toast.LENGTH_LONG).show();
-                        }
-                    }, throwable -> {
-                        Log.e(TAG, "getToken error.", throwable);
+            AuthService.getToken().enqueue(new Callback() {
+                @Override
+                public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                    Log.e(TAG, "getToken error.", e);
+                    Toast.makeText(MainActivity.this,
+                            "token error.", Toast.LENGTH_LONG).show();
+                }
+
+                @Override
+                public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                    String body = Objects.requireNonNull(response.body()).string();
+                    ApiTokenDto apiTokenDto = new Gson().fromJson(body, ApiTokenDto.class);
+                    if (apiTokenDto != null && apiTokenDto.getAccessToken() != null) {
+                        IFaceApplication.instance.setApiToken(apiTokenDto);
+                        Log.d(TAG, apiTokenDto.toString());
+                    } else {
                         Toast.makeText(MainActivity.this,
-                                "token error.", Toast.LENGTH_LONG).show();
-                    }).dispose();
+                                "token cannot be null.", Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
         } else {
             Log.d(TAG, IFaceApplication.instance.getApiToken());
         }

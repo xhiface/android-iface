@@ -1,11 +1,10 @@
 package xyz.zzyitj.iface.api;
 
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
-import xyz.zzyitj.iface.model.ApiToken;
-import xyz.zzyitj.iface.model.Server;
-import xyz.zzyitj.iface.util.ApiServerUtils;
+import okhttp3.Call;
+import okhttp3.HttpUrl;
+import okhttp3.Request;
+
+import java.util.Objects;
 
 /**
  * xyz.zzyitj.iface.api
@@ -15,18 +14,22 @@ import xyz.zzyitj.iface.util.ApiServerUtils;
  * @since 1.0
  */
 public class AuthService {
-    private static final String TAG = AuthService.class.getSimpleName();
-
     /**
      * 获取token
      *
-     * @param server service
      * @return token
      */
-    public static Observable<ApiToken> getToken(Server server) {
-        AuthInterface request = ApiServerUtils.getRetrofit(server).create(AuthInterface.class);
-        return request.getToken(ApiConst.AUTH_GRAND_TYPE, ApiConst.AUTH_API_KEY, ApiConst.AUTH_SECRET_KET)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+    public static Call getToken() {
+        HttpUrl.Builder urlBuilder = Objects.requireNonNull(HttpUrl.parse(ApiConst.HOST+ApiConst.AUTH_GET_TOKEN))
+                .newBuilder();
+        urlBuilder.addQueryParameter("grant_type",ApiConst.AUTH_GRAND_TYPE);
+        urlBuilder.addQueryParameter("client_id",ApiConst.AUTH_API_KEY);
+        urlBuilder.addQueryParameter("client_secret",ApiConst.AUTH_SECRET_KET);
+        Request.Builder requestBuilder = new Request.Builder();
+        requestBuilder
+                .url(urlBuilder.build())
+                .addHeader("Connection", "close")
+                .get();
+        return OkHttpService.getOkHttpClientInstance().newCall(requestBuilder.build());
     }
 }

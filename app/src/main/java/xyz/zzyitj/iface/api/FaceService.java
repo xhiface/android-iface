@@ -1,13 +1,10 @@
 package xyz.zzyitj.iface.api;
 
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
+import com.google.gson.Gson;
+import okhttp3.*;
 import xyz.zzyitj.iface.model.ApiFaceUserAddDo;
-import xyz.zzyitj.iface.model.ApiFaceUserAddDto;
-import xyz.zzyitj.iface.model.ApiResponseBody;
-import xyz.zzyitj.iface.model.Server;
-import xyz.zzyitj.iface.util.ApiServerUtils;
+
+import java.util.Objects;
 
 /**
  * xyz.zzyitj.iface.api
@@ -17,12 +14,17 @@ import xyz.zzyitj.iface.util.ApiServerUtils;
  * @since 1.0
  */
 public class FaceService {
-    public static Observable<ApiResponseBody<ApiFaceUserAddDto>> addUser(Server server,
-                                                                         String accessToken,
-                                                                         ApiFaceUserAddDo userAddDo) {
-        FaceInterface request = ApiServerUtils.getRetrofit(server).create(FaceInterface.class);
-        return request.addUser(accessToken, userAddDo)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+    public static Call addUser(String accessToken,
+                               ApiFaceUserAddDo userAddDo) {
+        HttpUrl.Builder urlBuilder = Objects.requireNonNull(HttpUrl.parse(ApiConst.HOST + ApiConst.FACE_ADD_USER))
+                .newBuilder();
+        urlBuilder.addQueryParameter("access_token", accessToken);
+        String data = new Gson().toJson(userAddDo);
+        Request.Builder requestBuilder = new Request.Builder();
+        requestBuilder
+                .url(urlBuilder.build())
+                .addHeader("Connection", "close")
+                .post(RequestBody.create(MediaType.parse("application/json"), data));
+        return OkHttpService.getOkHttpClientInstance().newCall(requestBuilder.build());
     }
 }

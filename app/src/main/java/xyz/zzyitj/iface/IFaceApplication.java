@@ -4,8 +4,7 @@ import android.app.Application;
 import android.content.SharedPreferences;
 import android.util.Log;
 import xyz.zzyitj.iface.api.ApiConst;
-import xyz.zzyitj.iface.model.Server;
-import xyz.zzyitj.iface.model.ApiToken;
+import xyz.zzyitj.iface.model.ApiTokenDto;
 
 /**
  * xyz.zzyitj.iface
@@ -22,7 +21,6 @@ public class IFaceApplication extends Application {
      * access_token的有效期为30天，切记需要每30天进行定期更换，或者每次请求都拉取新token
      */
     private String apiToken;
-    private Server server;
 
     public IFaceApplication() {
         instance = this;
@@ -115,19 +113,11 @@ public class IFaceApplication extends Application {
      *
      * @param apiToken apiToken
      */
-    public void setApiToken(ApiToken apiToken) {
+    public void setApiToken(ApiTokenDto apiToken) {
         this.apiToken = apiToken.getAccessToken();
         putApiLocalStorage(ApiConst.SHARED_PREFS_TOKEN, apiToken.getAccessToken());
         // 构造过期时间
         long expiresTime = System.currentTimeMillis() + (apiToken.getExpiresIn() * 1000);
         putApiLocalStorage(ApiConst.SHARED_PREFS_TOKEN_EXPIRES, expiresTime);
-    }
-
-    public Server getServer() {
-        return server;
-    }
-
-    public void setServer(Server server) {
-        this.server = server;
     }
 }

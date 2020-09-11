@@ -8,7 +8,13 @@ package xyz.zzyitj.iface.api;
  * @since 1.0
  */
 public class ApiConst {
-    public static final String HOST = "aip.baidubce.com";
+    /**
+     * okhttp
+     */
+    public static final long DEFAULT_HTTP_CONNECT_TIMEOUT = 10;
+    public static final long DEFAULT_HTTP_READ_TIMEOUT = 10;
+    public static final long DEFAULT_HTTP_WRITE_TIMEOUT = 10;
+    public static final String HOST = "https://aip.baidubce.com";
     /**
      * auth
      */
