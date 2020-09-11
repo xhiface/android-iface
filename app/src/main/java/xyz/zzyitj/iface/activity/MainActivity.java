@@ -56,11 +56,13 @@ public class MainActivity extends AppCompatActivity {
                         if (token.getAccessToken() != null) {
                             IFaceApplication.instance.setToken(token);
                         } else {
-                            Toast.makeText(MainActivity.this, "token cannot be null.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(MainActivity.this,
+                                    "token cannot be null.", Toast.LENGTH_LONG).show();
                         }
                     }, throwable -> {
                         Log.e(TAG, "getToken error.", throwable);
-                        Toast.makeText(MainActivity.this, "token error.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(MainActivity.this,
+                                "token error.", Toast.LENGTH_LONG).show();
                     });
         } else {
             Log.d(TAG, IFaceApplication.instance.getToken());
