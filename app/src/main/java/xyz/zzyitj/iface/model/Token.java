@@ -1,6 +1,5 @@
 package xyz.zzyitj.iface.model;
 
-import com.google.gson.annotations.JsonAdapter;
 import com.google.gson.annotations.SerializedName;
 
 /**

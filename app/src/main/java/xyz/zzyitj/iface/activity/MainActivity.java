@@ -25,8 +25,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Log.d(TAG, "onCreate");
         init();
-        initToken();
         initViews();
+        initToken();
     }
 
     private void initViews() {
@@ -49,21 +49,21 @@ public class MainActivity extends AppCompatActivity {
      * 初始化token
      */
     private void initToken() {
-        Log.d(TAG, "initToken");
-        AuthService.getToken(IFaceApplication.instance.getServer())
-                .subscribe(token -> {
-                    Log.d(TAG, token.toString());
-                    if (token.getAccessToken() != null) {
-                        IFaceApplication.instance.setToken(token.getAccessToken());
-                        if (textView != null) {
-                            textView.setText(IFaceApplication.instance.getToken());
+        if (IFaceApplication.instance.getToken() == null) {
+            AuthService.getToken(IFaceApplication.instance.getServer())
+                    .subscribe(token -> {
+                        Log.d(TAG, token.toString());
+                        if (token.getAccessToken() != null) {
+                            IFaceApplication.instance.setToken(token);
+                        } else {
+                            Toast.makeText(MainActivity.this, "token cannot be null.", Toast.LENGTH_LONG).show();
                         }
-                    } else {
-                        Toast.makeText(MainActivity.this, "token cannot be null.", Toast.LENGTH_LONG).show();
-                    }
-                }, throwable -> {
-                    Log.e(TAG, "getToken error.", throwable);
-                    Toast.makeText(MainActivity.this, "token error.", Toast.LENGTH_LONG).show();
-                });
+                    }, throwable -> {
+                        Log.e(TAG, "getToken error.", throwable);
+                        Toast.makeText(MainActivity.this, "token error.", Toast.LENGTH_LONG).show();
+                    });
+        } else {
+            Log.d(TAG, IFaceApplication.instance.getToken());
+        }
     }
 }
