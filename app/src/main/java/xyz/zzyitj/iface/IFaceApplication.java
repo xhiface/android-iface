@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 import android.util.Log;
 import xyz.zzyitj.iface.api.ApiConst;
 import xyz.zzyitj.iface.model.Server;
-import xyz.zzyitj.iface.model.Token;
+import xyz.zzyitj.iface.model.ApiToken;
 
 /**
  * xyz.zzyitj.iface
@@ -21,7 +21,7 @@ public class IFaceApplication extends Application {
     /**
      * access_token的有效期为30天，切记需要每30天进行定期更换，或者每次请求都拉取新token
      */
-    private String token;
+    private String apiToken;
     private Server server;
 
     public IFaceApplication() {
@@ -89,10 +89,10 @@ public class IFaceApplication extends Application {
      * 如果有token则检查token过期时间
      * 如果没有token则返回null
      *
-     * @return token
+     * @return apiToken
      */
-    public String getToken() {
-        if (token == null) {
+    public String getApiToken() {
+        if (apiToken == null) {
             String tempToken = (String) getApiLocalStorage(ApiConst.SHARED_PREFS_TOKEN, String.class);
             if (tempToken == null) {
                 return null;
@@ -103,23 +103,23 @@ public class IFaceApplication extends Application {
                 if (nowTime > expiresTime) {
                     return null;
                 }
-                token = tempToken;
-                return token;
+                apiToken = tempToken;
+                return apiToken;
             }
         }
-        return token;
+        return apiToken;
     }
 
     /**
      * 设置token和token过期时间
      *
-     * @param token token
+     * @param apiToken apiToken
      */
-    public void setToken(Token token) {
-        this.token = token.getAccessToken();
-        putApiLocalStorage(ApiConst.SHARED_PREFS_TOKEN, token.getAccessToken());
+    public void setApiToken(ApiToken apiToken) {
+        this.apiToken = apiToken.getAccessToken();
+        putApiLocalStorage(ApiConst.SHARED_PREFS_TOKEN, apiToken.getAccessToken());
         // 构造过期时间
-        long expiresTime = System.currentTimeMillis() + (token.getExpiresIn() * 1000);
+        long expiresTime = System.currentTimeMillis() + (apiToken.getExpiresIn() * 1000);
         putApiLocalStorage(ApiConst.SHARED_PREFS_TOKEN_EXPIRES, expiresTime);
     }
 

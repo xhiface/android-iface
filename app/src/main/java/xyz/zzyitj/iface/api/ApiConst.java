@@ -13,13 +13,17 @@ public class ApiConst {
      * auth
      */
     public static final String AUTH_GET_TOKEN = "/oauth/2.0/token";
-    public static final String GRAND_TYPE = "client_credentials";
-    public static final String API_KEY = "OK2ELSIG75h9iX9bs20NZafl";
-    public static final String SECRET_KET = "4aqyLiTMxLj8mqXvhG3au0KWbPnz17aB";
+    public static final String AUTH_GRAND_TYPE = "client_credentials";
+    public static final String AUTH_API_KEY = "OK2ELSIG75h9iX9bs20NZafl";
+    public static final String AUTH_SECRET_KET = "4aqyLiTMxLj8mqXvhG3au0KWbPnz17aB";
     /**
      * shared_prefs
      */
     public static final String SHARED_PREFS_NAME = "api_shared_prefs";
     public static final String SHARED_PREFS_TOKEN = "token";
     public static final String SHARED_PREFS_TOKEN_EXPIRES = "token_expires";
+    /**
+     * face
+     */
+    public static final String FACE_ADD_USER = "/rest/2.0/face/v3/faceset/user/add";
 }

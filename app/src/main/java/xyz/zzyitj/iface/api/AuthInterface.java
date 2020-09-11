@@ -3,7 +3,7 @@ package xyz.zzyitj.iface.api;
 import io.reactivex.Observable;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
-import xyz.zzyitj.iface.model.Token;
+import xyz.zzyitj.iface.model.ApiToken;
 
 /**
  * @author intent
@@ -13,7 +13,7 @@ import xyz.zzyitj.iface.model.Token;
  */
 public interface AuthInterface {
     @GET(value = ApiConst.AUTH_GET_TOKEN)
-    Observable<Token> getToken(@Query("grant_type") String grantType,
-                               @Query("client_id") String apiKey,
-                               @Query("client_secret") String secretKey);
+    Observable<ApiToken> getToken(@Query("grant_type") String grantType,
+                                  @Query("client_id") String apiKey,
+                                  @Query("client_secret") String secretKey);
 }
