@@ -5,4 +5,7 @@
     <string name="clock">Clock</string>
     <string name="clock_in">Clock in</string>
     <string name="clock_out">Clock out</string>
+    <string name="phone_number">Phone number</string>
+    <string name="user_name">User name</string>
+    <string name="input_success">Input success</string>
 </resources>

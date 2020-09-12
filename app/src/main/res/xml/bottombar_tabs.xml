@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<tabs xmlns:android="http://schemas.android.com/apk/res/android">
+    <tab
+            id="@+id/tab_clock"
+            title="@string/clock"/>
+    <tab
+            id="@+id/tab_input"
+            title="@string/input"/>
+</tabs>
