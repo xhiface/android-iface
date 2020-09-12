@@ -2,6 +2,9 @@ package xyz.zzyitj.iface;
 
 import org.junit.Test;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import static org.junit.Assert.*;
 
 /**
@@ -12,6 +15,7 @@ import static org.junit.Assert.*;
 public class ExampleUnitTest {
     @Test
     public void addition_isCorrect() {
-        assertEquals(4, 2 + 2);
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH");
+        System.out.println(simpleDateFormat.format(new Date()));
     }
 }

@@ -2,4 +2,8 @@
 <resources>
     <string name="app_name">iFace</string>
     <string name="input">录入</string>
+    <string name="camera_permission_not_granted">app没有授予相机权限！无法启动</string>
+    <string name="clock">打卡</string>
+    <string name="clock_out">下班打卡</string>
+    <string name="clock_in">上班打卡</string>
 </resources>
