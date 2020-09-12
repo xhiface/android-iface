@@ -15,6 +15,14 @@ public class ApiFaceUserAddDto {
 
     private Location location;
 
+    @Override
+    public String toString() {
+        return "ApiFaceUserAddDto{" +
+                "faceToken='" + faceToken + '\'' +
+                ", location=" + location +
+                '}';
+    }
+
     public String getFaceToken() {
         return faceToken;
     }

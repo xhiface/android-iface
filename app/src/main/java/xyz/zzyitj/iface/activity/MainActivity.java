@@ -6,6 +6,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import com.google.android.cameraview.CameraView;
 import okhttp3.Call;
 import xyz.zzyitj.iface.IFaceApplication;
 import xyz.zzyitj.iface.R;
@@ -25,8 +26,26 @@ import java.io.IOException;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
 
+    private CameraView cameraView;
     private TextView textView;
     private Button button;
+
+    private CameraView.Callback cameraViewCallback = new CameraView.Callback() {
+        @Override
+        public void onCameraOpened(CameraView cameraView) {
+            Log.d(TAG, "onCameraOpened");
+        }
+
+        @Override
+        public void onCameraClosed(CameraView cameraView) {
+            Log.d(TAG, "onCameraClosed");
+        }
+
+        @Override
+        public void onPictureTaken(CameraView cameraView, byte[] data) {
+            Log.d(TAG, "onPictureTaken " + data.length);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +57,34 @@ public class MainActivity extends AppCompatActivity {
         initToken();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        startCamera();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        stopCamera();
+    }
+
+    private void startCamera() {
+        if (cameraView != null) {
+            cameraView.start();
+        }
+    }
+
+    private void stopCamera() {
+        if (cameraView != null) {
+            cameraView.stop();
+        }
+    }
+
     private void initViews() {
+        cameraView = findViewById(R.id.main_camera);
+        cameraView.addCallback(cameraViewCallback);
+        cameraView.setFacing(CameraView.FACING_FRONT);
         textView = findViewById(R.id.main_hello);
         button = findViewById(R.id.main_button);
         button.setOnClickListener(v -> {

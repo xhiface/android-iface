@@ -12,19 +12,28 @@
             android:layout_height="match_parent"
             tools:ignore="MissingConstraints">
 
+        <com.google.android.cameraview.CameraView
+                android:id="@+id/main_camera"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_centerInParent="true"
+                android:adjustViewBounds="true"
+                android:background="@android:color/black"/>
+
         <TextView
                 android:id="@+id/main_hello"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="Hello World!"/>
+                android:text="Hello World!"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@+id/main_camera"/>
 
         <Button
                 android:id="@+id/main_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="@string/input"
                 android:layout_centerHorizontal="true"
-                android:text="Button"
                 android:layout_below="@+id/main_hello"/>
 
     </RelativeLayout>
