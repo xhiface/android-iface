@@ -6,20 +6,18 @@ import android.widget.TextView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import com.google.gson.Gson;
 import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.Response;
-import org.jetbrains.annotations.NotNull;
 import xyz.zzyitj.iface.IFaceApplication;
 import xyz.zzyitj.iface.R;
+import xyz.zzyitj.iface.api.ApiResponseCall;
 import xyz.zzyitj.iface.api.AuthService;
 import xyz.zzyitj.iface.api.FaceService;
 import xyz.zzyitj.iface.model.ApiFaceUserAddDo;
+import xyz.zzyitj.iface.model.ApiFaceUserAddDto;
+import xyz.zzyitj.iface.model.ApiResponseBody;
 import xyz.zzyitj.iface.model.ApiTokenDto;
 
 import java.io.IOException;
-import java.util.Objects;
 
 /**
  * @author intent
@@ -48,18 +46,18 @@ public class MainActivity extends AppCompatActivity {
             ApiFaceUserAddDo userAddDo = new ApiFaceUserAddDo();
             userAddDo.setImageType("URL");
             userAddDo.setImage("http://viapi-test.oss-cn-shanghai.aliyuncs.com/%E4%BA%BA%E8%84%B81%E6%AF%941.png");
-            userAddDo.setGroupId("admin");
+            userAddDo.setGroupId("user");
             userAddDo.setUid("a_qwrgqwf");
-            FaceService.addUser(IFaceApplication.instance.getApiToken(), userAddDo)
-                    .enqueue(new Callback() {
+            FaceService.addUser(IFaceApplication.instance.getApiToken(), userAddDo,
+                    new ApiResponseCall<ApiResponseBody<ApiFaceUserAddDto>>() {
                         @Override
-                        public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                            Log.e(TAG, "add user error.", e);
+                        public void onSuccess(Call call, ApiResponseBody<ApiFaceUserAddDto> body) {
+                            Log.d(TAG, body.toString());
                         }
 
                         @Override
-                        public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                            Log.d(TAG, Objects.requireNonNull(response.body()).string());
+                        public void onError(Call call, IOException e) {
+                            Log.e(TAG, "add user error.", e);
                         }
                     });
         });
@@ -76,18 +74,9 @@ public class MainActivity extends AppCompatActivity {
      */
     private void initToken() {
         if (IFaceApplication.instance.getApiToken() == null) {
-            AuthService.getToken().enqueue(new Callback() {
+            AuthService.getToken(new ApiResponseCall<ApiTokenDto>() {
                 @Override
-                public void onFailure(@NotNull Call call, @NotNull IOException e) {
-                    Log.e(TAG, "getToken error.", e);
-                    Toast.makeText(MainActivity.this,
-                            "token error.", Toast.LENGTH_LONG).show();
-                }
-
-                @Override
-                public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
-                    String body = Objects.requireNonNull(response.body()).string();
-                    ApiTokenDto apiTokenDto = new Gson().fromJson(body, ApiTokenDto.class);
+                public void onSuccess(Call call, ApiTokenDto apiTokenDto) {
                     if (apiTokenDto != null && apiTokenDto.getAccessToken() != null) {
                         IFaceApplication.instance.setApiToken(apiTokenDto);
                         Log.d(TAG, apiTokenDto.toString());
@@ -95,6 +84,13 @@ public class MainActivity extends AppCompatActivity {
                         Toast.makeText(MainActivity.this,
                                 "token cannot be null.", Toast.LENGTH_LONG).show();
                     }
+                }
+
+                @Override
+                public void onError(Call call, IOException e) {
+                    Log.e(TAG, "getToken error.", e);
+                    Toast.makeText(MainActivity.this,
+                            "token error.", Toast.LENGTH_LONG).show();
                 }
             });
         } else {

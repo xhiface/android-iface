@@ -19,7 +19,7 @@ public class ApiResponseBody<T> {
     private String errorMsg;
 
     @SerializedName("log_id")
-    private Integer logId;
+    private Long logId;
 
     private Long timestamp;
 
@@ -55,11 +55,11 @@ public class ApiResponseBody<T> {
         this.errorMsg = errorMsg;
     }
 
-    public Integer getLogId() {
+    public Long getLogId() {
         return logId;
     }
 
-    public void setLogId(Integer logId) {
+    public void setLogId(Long logId) {
         this.logId = logId;
     }
 

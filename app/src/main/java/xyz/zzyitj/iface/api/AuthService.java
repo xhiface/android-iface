@@ -1,9 +1,11 @@
 package xyz.zzyitj.iface.api;
 
-import okhttp3.Call;
-import okhttp3.HttpUrl;
-import okhttp3.Request;
+import com.google.gson.Gson;
+import okhttp3.*;
+import org.jetbrains.annotations.NotNull;
+import xyz.zzyitj.iface.model.ApiTokenDto;
 
+import java.io.IOException;
 import java.util.Objects;
 
 /**
@@ -19,17 +21,29 @@ public class AuthService {
      *
      * @return token
      */
-    public static Call getToken() {
-        HttpUrl.Builder urlBuilder = Objects.requireNonNull(HttpUrl.parse(ApiConst.HOST+ApiConst.AUTH_GET_TOKEN))
+    public static void getToken(ApiResponseCall<ApiTokenDto> responseCall) {
+        HttpUrl.Builder urlBuilder = Objects.requireNonNull(HttpUrl.parse(ApiConst.HOST + ApiConst.AUTH_GET_TOKEN))
                 .newBuilder();
-        urlBuilder.addQueryParameter("grant_type",ApiConst.AUTH_GRAND_TYPE);
-        urlBuilder.addQueryParameter("client_id",ApiConst.AUTH_API_KEY);
-        urlBuilder.addQueryParameter("client_secret",ApiConst.AUTH_SECRET_KET);
+        urlBuilder.addQueryParameter("grant_type", ApiConst.AUTH_GRAND_TYPE);
+        urlBuilder.addQueryParameter("client_id", ApiConst.AUTH_API_KEY);
+        urlBuilder.addQueryParameter("client_secret", ApiConst.AUTH_SECRET_KET);
         Request.Builder requestBuilder = new Request.Builder();
         requestBuilder
                 .url(urlBuilder.build())
                 .addHeader("Connection", "close")
                 .get();
-        return OkHttpService.getOkHttpClientInstance().newCall(requestBuilder.build());
+        OkHttpService.getOkHttpClientInstance().newCall(requestBuilder.build()).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                responseCall.onError(call, e);
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                String body = Objects.requireNonNull(response.body()).string();
+                ApiTokenDto apiTokenDto = new Gson().fromJson(body, ApiTokenDto.class);
+                responseCall.onSuccess(call, apiTokenDto);
+            }
+        });
     }
 }
