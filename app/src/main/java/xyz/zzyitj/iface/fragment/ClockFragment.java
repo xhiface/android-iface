@@ -3,12 +3,12 @@ package xyz.zzyitj.iface.fragment;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -17,9 +17,19 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import com.google.android.cameraview.CameraView;
+import okhttp3.Call;
+import org.apache.commons.codec.binary.Base64;
 import org.jetbrains.annotations.NotNull;
+import xyz.zzyitj.iface.IFaceApplication;
 import xyz.zzyitj.iface.R;
+import xyz.zzyitj.iface.api.ApiResponseCall;
+import xyz.zzyitj.iface.api.FaceService;
+import xyz.zzyitj.iface.model.ApiFaceSearchDo;
+import xyz.zzyitj.iface.model.ApiFaceSearchDto;
+import xyz.zzyitj.iface.model.ApiResponseBody;
 import xyz.zzyitj.iface.util.DateUtils;
+
+import java.io.IOException;
 
 
 /**
@@ -38,12 +48,37 @@ public class ClockFragment extends Fragment {
     private TextView textView;
     private Button clockButton;
 
-    private ImageView imageView;
-
     private final CameraView.Callback cameraViewCallback = new CameraView.Callback() {
         @Override
         public void onPictureTaken(CameraView cameraView, byte[] data) {
             Log.d(TAG, "onPictureTaken " + data.length);
+            ApiFaceSearchDo searchDo = new ApiFaceSearchDo();
+            searchDo.setImageType("BASE64");
+            searchDo.setImage(Base64.encodeBase64String(data));
+            searchDo.setGroupIdList("user");
+            FaceService.searchUser(IFaceApplication.instance.getApiToken(), searchDo,
+                    new ApiResponseCall<ApiResponseBody<ApiFaceSearchDto>>() {
+                        @Override
+                        public void onSuccess(Call call, ApiResponseBody<ApiFaceSearchDto> body) {
+                            Log.d(TAG, body.toString());
+                            if (body.getErrorCode() == 0) {
+                                Looper.prepare();
+                                ApiFaceSearchDto.User user = body.getResult().getUserList().get(0);
+                                Toast.makeText(getActivity(),
+                                        user.getUserId() + " 相似度: " + user.getScore(),
+                                        Toast.LENGTH_LONG).show();
+                                Looper.loop();
+                            }
+                        }
+
+                        @Override
+                        public void onError(Call call, IOException e) {
+                            Log.e(TAG, "search user error.", e);
+                            Looper.prepare();
+                            Toast.makeText(getActivity(), "error", Toast.LENGTH_LONG).show();
+                            Looper.loop();
+                        }
+                    });
         }
     };
 
@@ -79,7 +114,6 @@ public class ClockFragment extends Fragment {
         cameraView = rootView.findViewById(R.id.fragment_clock_camera);
         textView = rootView.findViewById(R.id.fragment_clock_hello);
         clockButton = rootView.findViewById(R.id.fragment_clock_button);
-        imageView = rootView.findViewById(R.id.fragment_clock_image);
         cameraView.addCallback(cameraViewCallback);
         cameraView.setFacing(CameraView.FACING_FRONT);
         if (DateUtils.checkNowIsNoon()) {
@@ -88,7 +122,9 @@ public class ClockFragment extends Fragment {
             clockButton.setText(R.string.clock_in);
         }
         clockButton.setOnClickListener(v -> {
-            cameraView.takePicture();
+            if (cameraView.isCameraOpened()) {
+                cameraView.takePicture();
+            }
         });
     }
 

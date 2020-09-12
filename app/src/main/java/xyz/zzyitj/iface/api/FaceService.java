@@ -4,9 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
-import xyz.zzyitj.iface.model.ApiFaceUserAddDo;
-import xyz.zzyitj.iface.model.ApiFaceUserAddDto;
-import xyz.zzyitj.iface.model.ApiResponseBody;
+import xyz.zzyitj.iface.model.*;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -43,6 +41,34 @@ public class FaceService {
                 Type type = new TypeToken<ApiResponseBody<ApiFaceUserAddDto>>() {
                 }.getType();
                 ApiResponseBody<ApiFaceUserAddDto> responseBody = new Gson().fromJson(b, type);
+                responseCall.onSuccess(call, responseBody);
+            }
+        });
+    }
+
+    public static void searchUser(String accessToken,
+                                  ApiFaceSearchDo userSearchDo, ApiResponseCall<ApiResponseBody<ApiFaceSearchDto>> responseCall){
+        HttpUrl.Builder urlBuilder = Objects.requireNonNull(HttpUrl.parse(ApiConst.HOST + ApiConst.FACE_SEARCH_USER))
+                .newBuilder();
+        urlBuilder.addQueryParameter("access_token", accessToken);
+        String data = new Gson().toJson(userSearchDo);
+        Request.Builder requestBuilder = new Request.Builder();
+        requestBuilder
+                .url(urlBuilder.build())
+                .addHeader("Connection", "close")
+                .post(RequestBody.create(MediaType.parse("application/json"), data));
+        OkHttpService.getOkHttpClientInstance().newCall(requestBuilder.build()).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NotNull Call call, @NotNull IOException e) {
+                responseCall.onError(call, e);
+            }
+
+            @Override
+            public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
+                String b = Objects.requireNonNull(response.body()).string();
+                Type type = new TypeToken<ApiResponseBody<ApiFaceSearchDto>>() {
+                }.getType();
+                ApiResponseBody<ApiFaceSearchDto> responseBody = new Gson().fromJson(b, type);
                 responseCall.onSuccess(call, responseBody);
             }
         });

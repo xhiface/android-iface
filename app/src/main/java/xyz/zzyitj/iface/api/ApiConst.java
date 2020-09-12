@@ -32,4 +32,5 @@ public class ApiConst {
      * face
      */
     public static final String FACE_ADD_USER = "/rest/2.0/face/v3/faceset/user/add";
+    public static final String FACE_SEARCH_USER = "/rest/2.0/face/v3/search";
 }

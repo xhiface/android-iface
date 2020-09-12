@@ -75,7 +75,9 @@ public class InputFragment extends Fragment {
     private Handler handler = new Handler() {
         @Override
         public void handleMessage(@NonNull Message msg) {
-            cameraView.takePicture();
+            if (cameraView.isCameraOpened()) {
+                cameraView.takePicture();
+            }
         }
     };
 
