@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,19 +21,15 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import com.google.android.cameraview.CameraView;
-import okhttp3.Call;
+import io.reactivex.disposables.Disposable;
 import org.apache.commons.codec.binary.Base64;
 import org.jetbrains.annotations.NotNull;
 import xyz.zzyitj.iface.IFaceApplication;
 import xyz.zzyitj.iface.R;
-import xyz.zzyitj.iface.api.ApiResponseCall;
 import xyz.zzyitj.iface.api.FaceService;
 import xyz.zzyitj.iface.model.ApiFaceUserAddDo;
-import xyz.zzyitj.iface.model.ApiFaceUserAddDto;
-import xyz.zzyitj.iface.model.ApiResponseBody;
 import xyz.zzyitj.iface.util.ThreadPoolExecutorUtils;
 
-import java.io.IOException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -118,22 +113,14 @@ public class InputFragment extends Fragment {
             userAddDo.setImage(Base64.encodeBase64String(temp));
             userAddDo.setGroupId("user");
             userAddDo.setUid(phoneNumberEditText.getText().toString());
-            FaceService.addUser(IFaceApplication.instance.getApiToken(), userAddDo,
-                    new ApiResponseCall<ApiResponseBody<ApiFaceUserAddDto>>() {
-                        @Override
-                        public void onSuccess(Call call, ApiResponseBody<ApiFaceUserAddDto> body) {
-                            Log.d(TAG, body.toString());
-                            if (body.getErrorCode() == 0) {
-                                Looper.prepare();
-                                Toast.makeText(getActivity(), R.string.input_success, Toast.LENGTH_LONG).show();
-                                Looper.loop();
-                            }
+            Disposable disposable = FaceService.addUser(IFaceApplication.instance.getApiToken(), userAddDo)
+                    .subscribe(body -> {
+                        if (body.getErrorCode() == 0) {
+                            Toast.makeText(getActivity(), R.string.input_success, Toast.LENGTH_LONG).show();
                         }
-
-                        @Override
-                        public void onError(Call call, IOException e) {
-                            Log.e(TAG, "add user error.", e);
-                        }
+                    }, throwable -> {
+                        Toast.makeText(getActivity(), R.string.input_error, Toast.LENGTH_LONG).show();
+                        Log.e(TAG, getString(R.string.input_error), throwable);
                     });
         });
         scheduledExecutorService.scheduleAtFixedRate(() -> {
@@ -165,7 +152,8 @@ public class InputFragment extends Fragment {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull @NotNull String[] permissions, @NonNull @NotNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull @NotNull String[] permissions,
+                                           @NonNull @NotNull int[] grantResults) {
         switch (requestCode) {
             case REQUEST_CAMERA_PERMISSION:
                 if (permissions.length != 1 || grantResults.length != 1) {

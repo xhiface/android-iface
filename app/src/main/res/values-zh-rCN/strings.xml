@@ -9,4 +9,5 @@
     <string name="phone_number">手机号</string>
     <string name="user_name">用户名</string>
     <string name="input_success">录入成功</string>
+    <string name="input_error">录入错误</string>
 </resources>

@@ -3,7 +3,6 @@ package xyz.zzyitj.iface.fragment;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.Looper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,19 +16,15 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import com.google.android.cameraview.CameraView;
-import okhttp3.Call;
+import io.reactivex.disposables.Disposable;
 import org.apache.commons.codec.binary.Base64;
 import org.jetbrains.annotations.NotNull;
 import xyz.zzyitj.iface.IFaceApplication;
 import xyz.zzyitj.iface.R;
-import xyz.zzyitj.iface.api.ApiResponseCall;
 import xyz.zzyitj.iface.api.FaceService;
 import xyz.zzyitj.iface.model.ApiFaceSearchDo;
 import xyz.zzyitj.iface.model.ApiFaceSearchDto;
-import xyz.zzyitj.iface.model.ApiResponseBody;
 import xyz.zzyitj.iface.util.DateUtils;
-
-import java.io.IOException;
 
 
 /**
@@ -56,28 +51,15 @@ public class ClockFragment extends Fragment {
             searchDo.setImageType("BASE64");
             searchDo.setImage(Base64.encodeBase64String(data));
             searchDo.setGroupIdList("user");
-            FaceService.searchUser(IFaceApplication.instance.getApiToken(), searchDo,
-                    new ApiResponseCall<ApiResponseBody<ApiFaceSearchDto>>() {
-                        @Override
-                        public void onSuccess(Call call, ApiResponseBody<ApiFaceSearchDto> body) {
-                            Log.d(TAG, body.toString());
-                            if (body.getErrorCode() == 0) {
-                                Looper.prepare();
-                                ApiFaceSearchDto.User user = body.getResult().getUserList().get(0);
-                                Toast.makeText(getActivity(),
-                                        user.getUserId() + " 相似度: " + user.getScore(),
-                                        Toast.LENGTH_LONG).show();
-                                Looper.loop();
-                            }
+            Disposable disposable = FaceService.searchUser(IFaceApplication.instance.getApiToken(), searchDo)
+                    .subscribe(body -> {
+                        Log.d(TAG, body.toString());
+                        if (body.getErrorCode() == 0) {
+                            ApiFaceSearchDto.User user = body.getResult().getUserList().get(0);
+                            textView.setText(user.getUserId() + " 相似度: " + user.getScore());
                         }
-
-                        @Override
-                        public void onError(Call call, IOException e) {
-                            Log.e(TAG, "search user error.", e);
-                            Looper.prepare();
-                            Toast.makeText(getActivity(), "error", Toast.LENGTH_LONG).show();
-                            Looper.loop();
-                        }
+                    }, throwable -> {
+                        Toast.makeText(getActivity(), "error", Toast.LENGTH_LONG).show();
                     });
         }
     };

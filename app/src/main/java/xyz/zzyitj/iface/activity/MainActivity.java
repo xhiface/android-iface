@@ -7,16 +7,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import com.roughike.bottombar.BottomBar;
 import com.roughike.bottombar.OnTabSelectListener;
-import okhttp3.Call;
 import xyz.zzyitj.iface.IFaceApplication;
 import xyz.zzyitj.iface.R;
-import xyz.zzyitj.iface.api.ApiResponseCall;
 import xyz.zzyitj.iface.api.AuthService;
 import xyz.zzyitj.iface.fragment.ClockFragment;
 import xyz.zzyitj.iface.fragment.InputFragment;
-import xyz.zzyitj.iface.model.ApiTokenDto;
-
-import java.io.IOException;
 
 /**
  * @author intent
@@ -88,25 +83,20 @@ public class MainActivity extends AppCompatActivity {
      */
     private void initToken() {
         if (IFaceApplication.instance.getApiToken() == null) {
-            AuthService.getToken(new ApiResponseCall<ApiTokenDto>() {
-                @Override
-                public void onSuccess(Call call, ApiTokenDto apiTokenDto) {
-                    if (apiTokenDto != null && apiTokenDto.getAccessToken() != null) {
-                        IFaceApplication.instance.setApiToken(apiTokenDto);
-                        Log.d(TAG, apiTokenDto.toString());
-                    } else {
+            AuthService.getToken()
+                    .subscribe(apiTokenDto -> {
+                        if (apiTokenDto != null && apiTokenDto.getAccessToken() != null) {
+                            IFaceApplication.instance.setApiToken(apiTokenDto);
+                            Log.d(TAG, apiTokenDto.toString());
+                        } else {
+                            Toast.makeText(MainActivity.this,
+                                    "token cannot be null.", Toast.LENGTH_LONG).show();
+                        }
+                    }, throwable -> {
+                        Log.e(TAG, "getToken error.", throwable);
                         Toast.makeText(MainActivity.this,
-                                "token cannot be null.", Toast.LENGTH_LONG).show();
-                    }
-                }
-
-                @Override
-                public void onError(Call call, IOException e) {
-                    Log.e(TAG, "getToken error.", e);
-                    Toast.makeText(MainActivity.this,
-                            "token error.", Toast.LENGTH_LONG).show();
-                }
-            });
+                                "token error.", Toast.LENGTH_LONG).show();
+                    });
         } else {
             Log.d(TAG, IFaceApplication.instance.getApiToken());
         }
