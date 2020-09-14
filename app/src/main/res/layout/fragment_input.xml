@@ -19,16 +19,12 @@
                 android:gravity="center"
                 tools:ignore="MissingConstraints">
 
-            <com.google.android.cameraview.CameraView
-                    android:id="@+id/fragment_input_camera"
-                    android:layout_width="200dp"
-                    android:layout_height="150dp"
-                    android:adjustViewBounds="true"/>
-
-            <ImageView
+            <xyz.zzyitj.iface.ui.CircleImageView
                     android:id="@+id/fragment_input_head"
                     android:layout_width="200dp"
-                    android:layout_height="150dp"/>
+                    android:layout_height="200dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/header"/>
 
         </LinearLayout>
 

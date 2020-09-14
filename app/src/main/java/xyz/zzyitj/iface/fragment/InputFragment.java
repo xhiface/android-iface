@@ -1,12 +1,11 @@
 package xyz.zzyitj.iface.fragment;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,19 +19,19 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import com.google.android.cameraview.CameraView;
 import io.reactivex.disposables.Disposable;
 import org.apache.commons.codec.binary.Base64;
 import org.jetbrains.annotations.NotNull;
 import xyz.zzyitj.iface.IFaceApplication;
 import xyz.zzyitj.iface.R;
+import xyz.zzyitj.iface.activity.MainActivity;
 import xyz.zzyitj.iface.api.FaceService;
 import xyz.zzyitj.iface.model.ApiFaceUserAddDo;
-import xyz.zzyitj.iface.util.ThreadPoolExecutorUtils;
+import xyz.zzyitj.iface.ui.CircleImageView;
 
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
+import java.io.ByteArrayOutputStream;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * xyz.zzyitj.iface.fragment
@@ -44,37 +43,20 @@ import java.util.concurrent.TimeUnit;
 public class InputFragment extends Fragment {
     private static final String TAG = InputFragment.class.getSimpleName();
     private static final int REQUEST_CAMERA_PERMISSION = 1;
+    private static final int REQUEST_IMAGE_CAPTURE = 2;
 
     private View rootView;
 
-    private CameraView cameraView;
-    private ImageView headImageView;
+    private CircleImageView headImageView;
     private EditText phoneNumberEditText;
     private EditText userNameEditText;
     private Button inputButton;
 
-    private byte[] temp;
+    private final MainActivity mainActivity;
 
-    private final CameraView.Callback cameraViewCallback = new CameraView.Callback() {
-        @Override
-        public void onPictureTaken(CameraView cameraView, byte[] data) {
-            temp = data;
-            Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length);
-            headImageView.setImageBitmap(bitmap);
-            headImageView.setRotation(-90);
-        }
-    };
-
-    private static ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(
-            1, new ThreadPoolExecutorUtils.CustomThreadFactory());
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(@NonNull Message msg) {
-            if (cameraView.isCameraOpened()) {
-                cameraView.takePicture();
-            }
-        }
-    };
+    public InputFragment(MainActivity mainActivity) {
+        this.mainActivity = mainActivity;
+    }
 
     @Nullable
     @org.jetbrains.annotations.Nullable
@@ -87,67 +69,63 @@ public class InputFragment extends Fragment {
         return rootView;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        startCamera();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        stopCamera();
-    }
-
     private void initViews(View rootView) {
-        cameraView = rootView.findViewById(R.id.fragment_input_camera);
         headImageView = rootView.findViewById(R.id.fragment_input_head);
         phoneNumberEditText = rootView.findViewById(R.id.fragment_input_phone_number);
         userNameEditText = rootView.findViewById(R.id.fragment_input_user_name);
+        headImageView.setDrawingCacheEnabled(true);
+        headImageView.setOnClickListener(v -> {
+            startCamera();
+        });
         inputButton = rootView.findViewById(R.id.fragment_input_button);
-        cameraView.addCallback(cameraViewCallback);
-        cameraView.setFacing(CameraView.FACING_FRONT);
         inputButton.setOnClickListener(v -> {
             ApiFaceUserAddDo userAddDo = new ApiFaceUserAddDo();
             userAddDo.setImageType("BASE64");
-            userAddDo.setImage(Base64.encodeBase64String(temp));
+            Bitmap drawingCache = headImageView.getDrawingCache();
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            drawingCache.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            userAddDo.setImage(Base64.encodeBase64String(baos.toByteArray()));
             userAddDo.setGroupId("user");
             userAddDo.setUid(phoneNumberEditText.getText().toString());
             Disposable disposable = FaceService.addUser(IFaceApplication.instance.getApiToken(), userAddDo)
                     .subscribe(body -> {
                         if (body.getErrorCode() == 0) {
-                            Toast.makeText(getActivity(), R.string.input_success, Toast.LENGTH_LONG).show();
+                            Toast.makeText(mainActivity, R.string.input_success, Toast.LENGTH_LONG).show();
+                            mainActivity.changeBottomTab(0);
                         }
                     }, throwable -> {
-                        Toast.makeText(getActivity(), R.string.input_error, Toast.LENGTH_LONG).show();
+                        Toast.makeText(mainActivity, R.string.input_error, Toast.LENGTH_LONG).show();
                         Log.e(TAG, getString(R.string.input_error), throwable);
                     });
         });
-        scheduledExecutorService.scheduleAtFixedRate(() -> {
-            Message message = new Message();
-            message.what = 1;
-            handler.sendMessage(message);
-        }, 0, 2, TimeUnit.SECONDS);
     }
 
     private void startCamera() {
-        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA)
+        if (ContextCompat.checkSelfPermission(mainActivity, Manifest.permission.CAMERA)
                 == PackageManager.PERMISSION_GRANTED) {
-            if (cameraView != null) {
-                cameraView.start();
-            }
-        } else if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
+            dispatchTakePictureIntent();
+        } else if (ActivityCompat.shouldShowRequestPermissionRationale(mainActivity,
                 Manifest.permission.CAMERA)) {
-            Toast.makeText(getActivity(), R.string.camera_permission_not_granted, Toast.LENGTH_LONG).show();
+            Toast.makeText(mainActivity, R.string.camera_permission_not_granted, Toast.LENGTH_LONG).show();
         } else {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA},
+            ActivityCompat.requestPermissions(mainActivity, new String[]{Manifest.permission.CAMERA},
                     REQUEST_CAMERA_PERMISSION);
         }
     }
 
-    private void stopCamera() {
-        if (cameraView != null) {
-            cameraView.stop();
+    private void dispatchTakePictureIntent() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(mainActivity.getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
+            headImageView.setImageBitmap(imageBitmap);
         }
     }
 
@@ -160,7 +138,7 @@ public class InputFragment extends Fragment {
                     throw new RuntimeException("Error on requesting camera permission.");
                 }
                 if (grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(getActivity(), R.string.camera_permission_not_granted,
+                    Toast.makeText(mainActivity, R.string.camera_permission_not_granted,
                             Toast.LENGTH_SHORT).show();
                 }
                 break;

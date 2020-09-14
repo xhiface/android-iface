@@ -21,6 +21,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.jetbrains.annotations.NotNull;
 import xyz.zzyitj.iface.IFaceApplication;
 import xyz.zzyitj.iface.R;
+import xyz.zzyitj.iface.activity.MainActivity;
 import xyz.zzyitj.iface.api.FaceService;
 import xyz.zzyitj.iface.model.ApiFaceSearchDo;
 import xyz.zzyitj.iface.model.ApiFaceSearchDto;
@@ -43,6 +44,8 @@ public class ClockFragment extends Fragment {
     private TextView textView;
     private Button clockButton;
 
+    private final MainActivity mainActivity;
+
     private final CameraView.Callback cameraViewCallback = new CameraView.Callback() {
         @Override
         public void onPictureTaken(CameraView cameraView, byte[] data) {
@@ -63,6 +66,10 @@ public class ClockFragment extends Fragment {
                     });
         }
     };
+
+    public ClockFragment(MainActivity mainActivity) {
+        this.mainActivity = mainActivity;
+    }
 
     @Nullable
     @org.jetbrains.annotations.Nullable
