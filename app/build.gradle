@@ -12,6 +12,7 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
     }
 
     buildTypes {
@@ -47,4 +48,7 @@ dependencies {
     implementation 'com.roughike:bottom-bar:2.3.1'
     // commons
     implementation group: 'commons-codec', name: 'commons-codec', version: '1.15'
+    // lombok
+    implementation 'org.projectlombok:lombok:1.18.12'
+    annotationProcessor 'org.projectlombok:lombok:1.18.12'
 }

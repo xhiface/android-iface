@@ -1,6 +1,9 @@
 package xyz.zzyitj.iface.model;
 
 import com.google.gson.annotations.SerializedName;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * xyz.zzyitj.iface.model
@@ -10,6 +13,9 @@ import com.google.gson.annotations.SerializedName;
  * @date 2020/9/11 15:30
  * @since 1.0
  */
+@Getter
+@Setter
+@ToString
 public class BaiduResponseBody<T> {
 
     @SerializedName("error_code")
@@ -26,64 +32,4 @@ public class BaiduResponseBody<T> {
     private Integer cached;
 
     private T result;
-
-    @Override
-    public String toString() {
-        return "BaiduResponseBody{" +
-                "errorCode=" + errorCode +
-                ", errorMsg='" + errorMsg + '\'' +
-                ", logId=" + logId +
-                ", timestamp=" + timestamp +
-                ", cached=" + cached +
-                ", result=" + result +
-                '}';
-    }
-
-    public Integer getErrorCode() {
-        return errorCode;
-    }
-
-    public void setErrorCode(Integer errorCode) {
-        this.errorCode = errorCode;
-    }
-
-    public String getErrorMsg() {
-        return errorMsg;
-    }
-
-    public void setErrorMsg(String errorMsg) {
-        this.errorMsg = errorMsg;
-    }
-
-    public Long getLogId() {
-        return logId;
-    }
-
-    public void setLogId(Long logId) {
-        this.logId = logId;
-    }
-
-    public Long getTimestamp() {
-        return timestamp;
-    }
-
-    public void setTimestamp(Long timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    public Integer getCached() {
-        return cached;
-    }
-
-    public void setCached(Integer cached) {
-        this.cached = cached;
-    }
-
-    public T getResult() {
-        return result;
-    }
-
-    public void setResult(T result) {
-        this.result = result;
-    }
 }

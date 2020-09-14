@@ -1,6 +1,9 @@
 package xyz.zzyitj.iface.model;
 
 import com.google.gson.annotations.SerializedName;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * xyz.zzyitj.iface.model
@@ -9,7 +12,10 @@ import com.google.gson.annotations.SerializedName;
  * @date 2020/9/11 17:13
  * @since 1.0
  */
-public class BaiduFaceUserAddDo {
+@Getter
+@Setter
+@ToString
+public class BaiduFaceUserAddVo {
     /**
      * 图片信息(总数据大小应小于10M)，图片上传方式根据image_type来判断。
      * 注：组内每个uid下的人脸图片数目上限为20张
@@ -46,44 +52,4 @@ public class BaiduFaceUserAddDo {
      */
     @SerializedName("user_info")
     private String userInfo;
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public String getImageType() {
-        return imageType;
-    }
-
-    public void setImageType(String imageType) {
-        this.imageType = imageType;
-    }
-
-    public String getGroupId() {
-        return groupId;
-    }
-
-    public void setGroupId(String groupId) {
-        this.groupId = groupId;
-    }
-
-    public String getUid() {
-        return uid;
-    }
-
-    public void setUid(String uid) {
-        this.uid = uid;
-    }
-
-    public String getUserInfo() {
-        return userInfo;
-    }
-
-    public void setUserInfo(String userInfo) {
-        this.userInfo = userInfo;
-    }
 }

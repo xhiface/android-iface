@@ -23,7 +23,7 @@ import java.util.Objects;
  */
 public class BaiduFaceService {
     public static Observable<BaiduResponseBody<BaiduFaceUserAddDto>> addUser(String accessToken,
-                                                                             BaiduFaceUserAddDo userAddDo) {
+                                                                             BaiduFaceUserAddVo userAddDo) {
         HttpUrl.Builder urlBuilder = Objects.requireNonNull(HttpUrl.parse(BaiduApiConst.HOST + BaiduApiConst.FACE_ADD_USER))
                 .newBuilder();
         urlBuilder.addQueryParameter("access_token", accessToken);
@@ -54,7 +54,7 @@ public class BaiduFaceService {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public static Observable<BaiduResponseBody<BaiduFaceSearchDto>> searchUser(String accessToken, BaiduFaceSearchDo userSearchDo) {
+    public static Observable<BaiduResponseBody<BaiduFaceSearchDto>> searchUser(String accessToken, BaiduFaceSearchVo userSearchDo) {
         HttpUrl.Builder urlBuilder = Objects.requireNonNull(HttpUrl.parse(BaiduApiConst.HOST + BaiduApiConst.FACE_SEARCH_USER))
                 .newBuilder();
         urlBuilder.addQueryParameter("access_token", accessToken);

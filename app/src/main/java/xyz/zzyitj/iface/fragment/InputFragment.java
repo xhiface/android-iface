@@ -25,7 +25,7 @@ import xyz.zzyitj.iface.IFaceApplication;
 import xyz.zzyitj.iface.R;
 import xyz.zzyitj.iface.activity.MainActivity;
 import xyz.zzyitj.iface.api.BaiduFaceService;
-import xyz.zzyitj.iface.model.BaiduFaceUserAddDo;
+import xyz.zzyitj.iface.model.BaiduFaceUserAddVo;
 import xyz.zzyitj.iface.ui.CircleImageView;
 
 import java.io.ByteArrayOutputStream;
@@ -78,7 +78,7 @@ public class InputFragment extends Fragment {
         });
         inputButton = rootView.findViewById(R.id.fragment_input_button);
         inputButton.setOnClickListener(v -> {
-            BaiduFaceUserAddDo userAddDo = new BaiduFaceUserAddDo();
+            BaiduFaceUserAddVo userAddDo = new BaiduFaceUserAddVo();
             userAddDo.setImageType("BASE64");
             Bitmap drawingCache = headImageView.getDrawingCache();
             ByteArrayOutputStream baos = new ByteArrayOutputStream();

@@ -1,6 +1,9 @@
 package xyz.zzyitj.iface.model;
 
 import com.google.gson.annotations.SerializedName;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 /**
  * xyz.zzyitj.iface.model
@@ -9,7 +12,10 @@ import com.google.gson.annotations.SerializedName;
  * @date 2020/9/12 16:57
  * @since 1.0
  */
-public class BaiduFaceSearchDo {
+@Getter
+@Setter
+@ToString
+public class BaiduFaceSearchVo {
     /**
      * 图片信息(总数据大小应小于10M)，图片上传方式根据image_type来判断。
      * 注：组内每个uid下的人脸图片数目上限为20张
@@ -31,37 +37,4 @@ public class BaiduFaceSearchDo {
      */
     @SerializedName("group_id_list")
     private String groupIdList;
-
-    @Override
-    public String toString() {
-        return "BaiduFaceSearchDo{" +
-                "image='" + image + '\'' +
-                ", imageType='" + imageType + '\'' +
-                ", groupIdList='" + groupIdList + '\'' +
-                '}';
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
-    }
-
-    public String getImageType() {
-        return imageType;
-    }
-
-    public void setImageType(String imageType) {
-        this.imageType = imageType;
-    }
-
-    public String getGroupIdList() {
-        return groupIdList;
-    }
-
-    public void setGroupIdList(String groupIdList) {
-        this.groupIdList = groupIdList;
-    }
 }

@@ -1,6 +1,9 @@
 package xyz.zzyitj.iface.model;
 
 import com.google.gson.annotations.SerializedName;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -11,6 +14,9 @@ import java.util.List;
  * @date 2020/9/12 17:04
  * @since 1.0
  */
+@Getter
+@Setter
+@ToString
 public class BaiduFaceSearchDto {
     @SerializedName("face_token")
     private String faceToken;
@@ -18,30 +24,9 @@ public class BaiduFaceSearchDto {
     @SerializedName("user_list")
     private List<User> userList;
 
-    @Override
-    public String toString() {
-        return "BaiduFaceSearchDto{" +
-                "faceToken='" + faceToken + '\'' +
-                ", userList=" + userList +
-                '}';
-    }
-
-    public String getFaceToken() {
-        return faceToken;
-    }
-
-    public void setFaceToken(String faceToken) {
-        this.faceToken = faceToken;
-    }
-
-    public List<User> getUserList() {
-        return userList;
-    }
-
-    public void setUserList(List<User> userList) {
-        this.userList = userList;
-    }
-
+    @Getter
+    @Setter
+    @ToString
     public static class User {
         @SerializedName("group_id")
         private String groupId;
@@ -53,47 +38,5 @@ public class BaiduFaceSearchDto {
         private String userInfo;
 
         private float score;
-
-        @Override
-        public String toString() {
-            return "User{" +
-                    "groupId='" + groupId + '\'' +
-                    ", userId='" + userId + '\'' +
-                    ", userInfo='" + userInfo + '\'' +
-                    ", score=" + score +
-                    '}';
-        }
-
-        public String getGroupId() {
-            return groupId;
-        }
-
-        public void setGroupId(String groupId) {
-            this.groupId = groupId;
-        }
-
-        public String getUserId() {
-            return userId;
-        }
-
-        public void setUserId(String userId) {
-            this.userId = userId;
-        }
-
-        public String getUserInfo() {
-            return userInfo;
-        }
-
-        public void setUserInfo(String userInfo) {
-            this.userInfo = userInfo;
-        }
-
-        public float getScore() {
-            return score;
-        }
-
-        public void setScore(float score) {
-            this.score = score;
-        }
     }
 }

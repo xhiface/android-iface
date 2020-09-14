@@ -23,7 +23,7 @@ import xyz.zzyitj.iface.IFaceApplication;
 import xyz.zzyitj.iface.R;
 import xyz.zzyitj.iface.activity.MainActivity;
 import xyz.zzyitj.iface.api.BaiduFaceService;
-import xyz.zzyitj.iface.model.BaiduFaceSearchDo;
+import xyz.zzyitj.iface.model.BaiduFaceSearchVo;
 import xyz.zzyitj.iface.model.BaiduFaceSearchDto;
 import xyz.zzyitj.iface.util.DateUtils;
 
@@ -50,7 +50,7 @@ public class ClockFragment extends Fragment {
         @Override
         public void onPictureTaken(CameraView cameraView, byte[] data) {
             Log.d(TAG, "onPictureTaken " + data.length);
-            BaiduFaceSearchDo searchDo = new BaiduFaceSearchDo();
+            BaiduFaceSearchVo searchDo = new BaiduFaceSearchVo();
             searchDo.setImageType("BASE64");
             searchDo.setImage(Base64.encodeBase64String(data));
             searchDo.setGroupIdList("user");
