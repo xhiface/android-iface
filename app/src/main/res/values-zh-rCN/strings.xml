@@ -7,7 +7,23 @@
     <string name="clock_out">下班打卡</string>
     <string name="clock_in">上班打卡</string>
     <string name="phone_number">手机号</string>
-    <string name="user_name">用户名</string>
+    <string name="user_name">姓名</string>
     <string name="input_success">录入成功</string>
     <string name="input_error">录入错误</string>
+    <string name="login">登录</string>
+    <string name="register">注册</string>
+    <string name="email">Email</string>
+    <string name="password">密码</string>
+    <string name="age">年龄</string>
+    <string name="register_error">用户注册错误</string>
+    <string name="phone_number_cannot_empty">电话号码不能为空</string>
+    <string name="header_cannot_empty">头像不能为空</string>
+    <string name="email_cannot_empty">邮箱不能为空</string>
+    <string name="email_format_error">邮箱格式错误</string>
+    <string name="phone_number_format_error">电话号码格式错误</string>
+    <string name="user_name_cannot_empty">用户名不能为空</string>
+    <string name="age_cannot_empty">年龄不能为空</string>
+    <string name="password_cannot_empty">密码不能为空</string>
+    <string name="age_format_error">年龄格式错误</string>
+    <string name="register_success">用户注册成功</string>
 </resources>

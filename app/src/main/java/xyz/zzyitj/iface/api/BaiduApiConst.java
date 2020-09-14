@@ -31,6 +31,8 @@ public class BaiduApiConst {
     /**
      * face
      */
+    public static final String DEFAULT_GROUP = "user";
+    public static final String IMAGE_TYPE_BASE_64 = "BASE64";
     public static final String FACE_ADD_USER = "/rest/2.0/face/v3/faceset/user/add";
     public static final String FACE_SEARCH_USER = "/rest/2.0/face/v3/search";
 }

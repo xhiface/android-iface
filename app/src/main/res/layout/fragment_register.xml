@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:ignore="MissingConstraints">
+
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                tools:ignore="MissingConstraints">
+
+            <xyz.zzyitj.iface.ui.CircleImageView
+                    android:id="@+id/fragment_register_head"
+                    android:layout_width="200dp"
+                    android:layout_height="200dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/header"/>
+
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/fragment_register_phone_number"
+                android:ems="10"
+                android:hint="@string/phone_number"
+                android:inputType="phone"
+                android:text="18222222222"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/fragment_register_email"
+                android:ems="10"
+                android:hint="@string/email"
+                android:text="1428658308@qq.com"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/fragment_register_user_name"
+                    android:ems="5"
+                    android:hint="@string/user_name"
+                    android:text="intent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/fragment_register_age"
+                    android:ems="3"
+                    android:inputType="number"
+                    android:hint="@string/age"
+                    android:text="23"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/fragment_register_gender"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:entries="@array/spinner_gender"/>
+
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/fragment_register_password"
+                android:ems="10"
+                android:hint="@string/password"
+                android:inputType="textPassword"
+                android:text="123456ab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/fragment_register_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/register"/>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

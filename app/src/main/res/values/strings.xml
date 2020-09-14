@@ -9,4 +9,20 @@
     <string name="user_name">User name</string>
     <string name="input_success">Input success</string>
     <string name="input_error">Input error</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="age">Age</string>
+    <string name="register_error">Register user error.</string>
+    <string name="phone_number_cannot_empty">Phone number cannot empty.</string>
+    <string name="header_cannot_empty">Header cannot empty.</string>
+    <string name="email_cannot_empty">Email cannot empty.</string>
+    <string name="email_format_error">Email format error.</string>
+    <string name="phone_number_format_error">Phone number format error.</string>
+    <string name="user_name_cannot_empty">User name cannot empty.</string>
+    <string name="age_cannot_empty">Age cannot empty.</string>
+    <string name="password_cannot_empty">Passrowd cannot empty.</string>
+    <string name="age_format_error">Age format error.</string>
+    <string name="register_success">Register user success.</string>
 </resources>

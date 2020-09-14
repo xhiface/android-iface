@@ -22,6 +22,7 @@ import org.jetbrains.annotations.NotNull;
 import xyz.zzyitj.iface.IFaceApplication;
 import xyz.zzyitj.iface.R;
 import xyz.zzyitj.iface.activity.MainActivity;
+import xyz.zzyitj.iface.api.BaiduApiConst;
 import xyz.zzyitj.iface.api.BaiduFaceService;
 import xyz.zzyitj.iface.model.BaiduFaceSearchVo;
 import xyz.zzyitj.iface.model.BaiduFaceSearchDto;
@@ -51,9 +52,9 @@ public class ClockFragment extends Fragment {
         public void onPictureTaken(CameraView cameraView, byte[] data) {
             Log.d(TAG, "onPictureTaken " + data.length);
             BaiduFaceSearchVo searchDo = new BaiduFaceSearchVo();
-            searchDo.setImageType("BASE64");
+            searchDo.setImageType(BaiduApiConst.IMAGE_TYPE_BASE_64);
             searchDo.setImage(Base64.encodeBase64String(data));
-            searchDo.setGroupIdList("user");
+            searchDo.setGroupIdList(BaiduApiConst.DEFAULT_GROUP);
             Disposable disposable = BaiduFaceService.searchUser(IFaceApplication.instance.getApiToken(), searchDo)
                     .subscribe(body -> {
                         Log.d(TAG, body.toString());
