@@ -27,4 +27,5 @@
     <string name="register_success">Register user success.</string>
     <string name="registering">Registering...</string>
     <string name="api_register_error">Api register error.</string>
+    <string name="clocking">Clocking...</string>
 </resources>

@@ -26,6 +26,7 @@ import xyz.zzyitj.iface.api.BaiduApiConst;
 import xyz.zzyitj.iface.api.BaiduFaceService;
 import xyz.zzyitj.iface.model.BaiduFaceSearchVo;
 import xyz.zzyitj.iface.model.BaiduFaceSearchDto;
+import xyz.zzyitj.iface.ui.ProgressDialog;
 import xyz.zzyitj.iface.util.DateUtils;
 
 
@@ -51,6 +52,8 @@ public class ClockFragment extends Fragment {
         @Override
         public void onPictureTaken(CameraView cameraView, byte[] data) {
             Log.d(TAG, "onPictureTaken " + data.length);
+            ProgressDialog progressDialog = new ProgressDialog(mainActivity, getString(R.string.clocking));
+            progressDialog.show();
             BaiduFaceSearchVo searchDo = new BaiduFaceSearchVo();
             searchDo.setImageType(BaiduApiConst.IMAGE_TYPE_BASE_64);
             searchDo.setImage(Base64.encodeBase64String(data));
@@ -62,8 +65,10 @@ public class ClockFragment extends Fragment {
                             BaiduFaceSearchDto.User user = body.getResult().getUserList().get(0);
                             textView.setText(user.getUserId() + " 相似度: " + user.getScore());
                         }
+                        progressDialog.dismiss();
                     }, throwable -> {
                         Toast.makeText(getActivity(), "error", Toast.LENGTH_LONG).show();
+                        progressDialog.dismiss();
                     });
         }
     };

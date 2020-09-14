@@ -12,12 +12,13 @@
             android:gravity="center">
 
         <androidx.core.widget.ContentLoadingProgressBar
-                android:id="@+id/dialog_progress"
+                android:id="@+id/dialog_progress_bar"
                 style="?android:attr/progressBarStyleLarge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
         <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/dialog_progress_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/registering"/>

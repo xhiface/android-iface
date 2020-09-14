@@ -200,7 +200,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
             }
             apiUserVo.setGender(gender);
             apiUserVo.setGroupId(BaiduApiConst.DEFAULT_GROUP);
-            ProgressDialog progressDialog = new ProgressDialog(activity);
+            ProgressDialog progressDialog = new ProgressDialog(activity, getString(R.string.registering));
             progressDialog.show();
             isRegistering = true;
             BaiduFaceService.addUser(IFaceApplication.instance.getApiToken(), baiduFaceUserAddVo)
