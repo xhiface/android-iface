@@ -22,16 +22,17 @@ import androidx.appcompat.widget.AppCompatSpinner;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import io.reactivex.disposables.Disposable;
 import org.apache.commons.codec.binary.Base64;
 import org.jetbrains.annotations.NotNull;
 import xyz.zzyitj.iface.IFaceApplication;
 import xyz.zzyitj.iface.R;
+import xyz.zzyitj.iface.activity.MainActivity;
 import xyz.zzyitj.iface.api.BaiduApiConst;
 import xyz.zzyitj.iface.api.BaiduFaceService;
 import xyz.zzyitj.iface.model.ApiUserVo;
 import xyz.zzyitj.iface.model.BaiduFaceUserAddVo;
 import xyz.zzyitj.iface.ui.CircleImageView;
+import xyz.zzyitj.iface.ui.ProgressDialog;
 import xyz.zzyitj.iface.util.RegexUtils;
 
 import java.io.ByteArrayOutputStream;
@@ -71,6 +72,10 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
      * false为女
      */
     private boolean gender;
+    /**
+     * 是否正在注册
+     */
+    private boolean isRegistering;
 
     public RegisterFragment(Activity activity) {
         this.activity = activity;
@@ -126,7 +131,9 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                 startCamera();
                 break;
             case R.id.fragment_register_button:
-                registerUser();
+                if (!isRegistering) {
+                    registerUser();
+                }
                 break;
             default:
         }
@@ -191,16 +198,26 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                 apiUserVo.setPassword(passwordEditText.getText().toString());
             }
             apiUserVo.setGender(gender);
-            Disposable disposable = BaiduFaceService.addUser(IFaceApplication.instance.getApiToken(), baiduFaceUserAddVo)
+            apiUserVo.setGroupId(BaiduApiConst.DEFAULT_GROUP);
+            ProgressDialog progressDialog = new ProgressDialog(activity);
+            progressDialog.show();
+            isRegistering = true;
+            BaiduFaceService.addUser(IFaceApplication.instance.getApiToken(), baiduFaceUserAddVo)
                     .subscribe(body -> {
                         if (body.getErrorCode() == 0) {
                             // 百度注册成功
-//                            Toast.makeText(activity, R.string.register_success, Toast.LENGTH_LONG).show();
-
+                            Toast.makeText(activity, R.string.register_success, Toast.LENGTH_LONG).show();
+                            apiUserVo.setFaceId(body.getResult().getFaceToken());
+                            // 跳转
+                            Log.d(TAG, apiUserVo.toString());
+                            activity.startActivity(new Intent(activity, MainActivity.class));
                         }
+                        progressDialog.dismiss();
                     }, throwable -> {
                         Toast.makeText(activity, R.string.register_error, Toast.LENGTH_LONG).show();
                         Log.e(TAG, getString(R.string.register_error), throwable);
+                        progressDialog.dismiss();
+                        isRegistering = false;
                     });
         } else {
             Toast.makeText(activity, R.string.header_cannot_empty, Toast.LENGTH_LONG).show();
