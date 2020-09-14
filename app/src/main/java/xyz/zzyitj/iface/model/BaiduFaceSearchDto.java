@@ -11,7 +11,7 @@ import java.util.List;
  * @date 2020/9/12 17:04
  * @since 1.0
  */
-public class ApiFaceSearchDto {
+public class BaiduFaceSearchDto {
     @SerializedName("face_token")
     private String faceToken;
 
@@ -20,7 +20,7 @@ public class ApiFaceSearchDto {
 
     @Override
     public String toString() {
-        return "ApiFaceSearchDto{" +
+        return "BaiduFaceSearchDto{" +
                 "faceToken='" + faceToken + '\'' +
                 ", userList=" + userList +
                 '}';

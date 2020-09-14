@@ -7,7 +7,7 @@ import android.os.Bundle;
 import com.roughike.bottombar.BottomBar;
 import xyz.zzyitj.iface.IFaceApplication;
 import xyz.zzyitj.iface.R;
-import xyz.zzyitj.iface.api.AuthService;
+import xyz.zzyitj.iface.api.BaiduAuthService;
 import xyz.zzyitj.iface.fragment.ClockFragment;
 import xyz.zzyitj.iface.fragment.InputFragment;
 
@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
      */
     private void initToken() {
         if (IFaceApplication.instance.getApiToken() == null) {
-            AuthService.getToken()
+            BaiduAuthService.getToken()
                     .subscribe(apiTokenDto -> {
                         if (apiTokenDto != null && apiTokenDto.getAccessToken() != null) {
                             IFaceApplication.instance.setApiToken(apiTokenDto);

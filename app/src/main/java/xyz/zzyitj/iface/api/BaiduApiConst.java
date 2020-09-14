@@ -7,7 +7,7 @@ package xyz.zzyitj.iface.api;
  * @date 2020/9/8 14:42
  * @since 1.0
  */
-public class ApiConst {
+public class BaiduApiConst {
     /**
      * okhttp
      */

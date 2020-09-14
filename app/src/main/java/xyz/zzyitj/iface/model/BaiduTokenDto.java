@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
  * @date 2020/9/8 16:14
  * @since 1.0
  */
-public class ApiTokenDto {
+public class BaiduTokenDto {
     @SerializedName("refresh_token")
     private String refreshToken;
     @SerializedName("expires_in")
@@ -24,7 +24,7 @@ public class ApiTokenDto {
 
     @Override
     public String toString() {
-        return "ApiTokenDto{" +
+        return "BaiduTokenDto{" +
                 "refreshToken='" + refreshToken + '\'' +
                 ", expiresIn=" + expiresIn +
                 ", sessionKey='" + sessionKey + '\'' +

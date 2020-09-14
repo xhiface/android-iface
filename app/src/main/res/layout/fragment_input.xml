@@ -28,21 +28,22 @@
 
         </LinearLayout>
 
-        <EditText
+        <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/fragment_input_phone_number"
                 android:ems="10"
                 android:hint="@string/phone_number"
+                android:inputType="phone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
-        <EditText
+        <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/fragment_input_user_name"
                 android:ems="10"
                 android:hint="@string/user_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/fragment_input_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

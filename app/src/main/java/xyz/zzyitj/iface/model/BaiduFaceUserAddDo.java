@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
  * @date 2020/9/11 17:13
  * @since 1.0
  */
-public class ApiFaceUserAddDo {
+public class BaiduFaceUserAddDo {
     /**
      * 图片信息(总数据大小应小于10M)，图片上传方式根据image_type来判断。
      * 注：组内每个uid下的人脸图片数目上限为20张

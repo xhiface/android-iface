@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
  * @date 2020/9/12 16:57
  * @since 1.0
  */
-public class ApiFaceSearchDo {
+public class BaiduFaceSearchDo {
     /**
      * 图片信息(总数据大小应小于10M)，图片上传方式根据image_type来判断。
      * 注：组内每个uid下的人脸图片数目上限为20张
@@ -34,7 +34,7 @@ public class ApiFaceSearchDo {
 
     @Override
     public String toString() {
-        return "ApiFaceSearchDo{" +
+        return "BaiduFaceSearchDo{" +
                 "image='" + image + '\'' +
                 ", imageType='" + imageType + '\'' +
                 ", groupIdList='" + groupIdList + '\'' +

@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName;
  * @date 2020/9/11 17:07
  * @since 1.0
  */
-public class ApiFaceUserAddDto {
+public class BaiduFaceUserAddDto {
     @SerializedName("face_token")
     private String faceToken;
 
@@ -17,7 +17,7 @@ public class ApiFaceUserAddDto {
 
     @Override
     public String toString() {
-        return "ApiFaceUserAddDto{" +
+        return "BaiduFaceUserAddDto{" +
                 "faceToken='" + faceToken + '\'' +
                 ", location=" + location +
                 '}';

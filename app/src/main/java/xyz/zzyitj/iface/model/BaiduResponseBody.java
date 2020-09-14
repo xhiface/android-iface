@@ -10,7 +10,7 @@ import com.google.gson.annotations.SerializedName;
  * @date 2020/9/11 15:30
  * @since 1.0
  */
-public class ApiResponseBody<T> {
+public class BaiduResponseBody<T> {
 
     @SerializedName("error_code")
     private Integer errorCode;
@@ -29,7 +29,7 @@ public class ApiResponseBody<T> {
 
     @Override
     public String toString() {
-        return "ApiResponseBody{" +
+        return "BaiduResponseBody{" +
                 "errorCode=" + errorCode +
                 ", errorMsg='" + errorMsg + '\'' +
                 ", logId=" + logId +

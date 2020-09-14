@@ -19,11 +19,11 @@ public class OkHttpService {
                 if (okHttpClient == null) {
                     okHttpClient = new OkHttpClient.Builder()
                             //连接超时
-                            .connectTimeout(ApiConst.DEFAULT_HTTP_CONNECT_TIMEOUT, TimeUnit.SECONDS)
+                            .connectTimeout(BaiduApiConst.DEFAULT_HTTP_CONNECT_TIMEOUT, TimeUnit.SECONDS)
                             //读取超时
-                            .readTimeout(ApiConst.DEFAULT_HTTP_READ_TIMEOUT, TimeUnit.SECONDS)
+                            .readTimeout(BaiduApiConst.DEFAULT_HTTP_READ_TIMEOUT, TimeUnit.SECONDS)
                             //写超时
-                            .writeTimeout(ApiConst.DEFAULT_HTTP_WRITE_TIMEOUT, TimeUnit.SECONDS)
+                            .writeTimeout(BaiduApiConst.DEFAULT_HTTP_WRITE_TIMEOUT, TimeUnit.SECONDS)
                             .build();
                     okHttpClient.dispatcher().setMaxRequests(128);
                     okHttpClient.dispatcher().setMaxRequestsPerHost(12);

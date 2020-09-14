@@ -10,12 +10,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatEditText;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -25,8 +24,8 @@ import org.jetbrains.annotations.NotNull;
 import xyz.zzyitj.iface.IFaceApplication;
 import xyz.zzyitj.iface.R;
 import xyz.zzyitj.iface.activity.MainActivity;
-import xyz.zzyitj.iface.api.FaceService;
-import xyz.zzyitj.iface.model.ApiFaceUserAddDo;
+import xyz.zzyitj.iface.api.BaiduFaceService;
+import xyz.zzyitj.iface.model.BaiduFaceUserAddDo;
 import xyz.zzyitj.iface.ui.CircleImageView;
 
 import java.io.ByteArrayOutputStream;
@@ -48,9 +47,9 @@ public class InputFragment extends Fragment {
     private View rootView;
 
     private CircleImageView headImageView;
-    private EditText phoneNumberEditText;
-    private EditText userNameEditText;
-    private Button inputButton;
+    private AppCompatEditText phoneNumberEditText;
+    private AppCompatEditText userNameEditText;
+    private AppCompatButton inputButton;
 
     private final MainActivity mainActivity;
 
@@ -79,7 +78,7 @@ public class InputFragment extends Fragment {
         });
         inputButton = rootView.findViewById(R.id.fragment_input_button);
         inputButton.setOnClickListener(v -> {
-            ApiFaceUserAddDo userAddDo = new ApiFaceUserAddDo();
+            BaiduFaceUserAddDo userAddDo = new BaiduFaceUserAddDo();
             userAddDo.setImageType("BASE64");
             Bitmap drawingCache = headImageView.getDrawingCache();
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
@@ -87,7 +86,7 @@ public class InputFragment extends Fragment {
             userAddDo.setImage(Base64.encodeBase64String(baos.toByteArray()));
             userAddDo.setGroupId("user");
             userAddDo.setUid(phoneNumberEditText.getText().toString());
-            Disposable disposable = FaceService.addUser(IFaceApplication.instance.getApiToken(), userAddDo)
+            Disposable disposable = BaiduFaceService.addUser(IFaceApplication.instance.getApiToken(), userAddDo)
                     .subscribe(body -> {
                         if (body.getErrorCode() == 0) {
                             Toast.makeText(mainActivity, R.string.input_success, Toast.LENGTH_LONG).show();
@@ -121,8 +120,10 @@ public class InputFragment extends Fragment {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
+    public void onActivityResult(int requestCode, int resultCode,
+                                 @Nullable Intent data) {
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
+            assert data != null;
             Bundle extras = data.getExtras();
             Bitmap imageBitmap = (Bitmap) extras.get("data");
             headImageView.setImageBitmap(imageBitmap);

@@ -22,9 +22,9 @@ import org.jetbrains.annotations.NotNull;
 import xyz.zzyitj.iface.IFaceApplication;
 import xyz.zzyitj.iface.R;
 import xyz.zzyitj.iface.activity.MainActivity;
-import xyz.zzyitj.iface.api.FaceService;
-import xyz.zzyitj.iface.model.ApiFaceSearchDo;
-import xyz.zzyitj.iface.model.ApiFaceSearchDto;
+import xyz.zzyitj.iface.api.BaiduFaceService;
+import xyz.zzyitj.iface.model.BaiduFaceSearchDo;
+import xyz.zzyitj.iface.model.BaiduFaceSearchDto;
 import xyz.zzyitj.iface.util.DateUtils;
 
 
@@ -50,15 +50,15 @@ public class ClockFragment extends Fragment {
         @Override
         public void onPictureTaken(CameraView cameraView, byte[] data) {
             Log.d(TAG, "onPictureTaken " + data.length);
-            ApiFaceSearchDo searchDo = new ApiFaceSearchDo();
+            BaiduFaceSearchDo searchDo = new BaiduFaceSearchDo();
             searchDo.setImageType("BASE64");
             searchDo.setImage(Base64.encodeBase64String(data));
             searchDo.setGroupIdList("user");
-            Disposable disposable = FaceService.searchUser(IFaceApplication.instance.getApiToken(), searchDo)
+            Disposable disposable = BaiduFaceService.searchUser(IFaceApplication.instance.getApiToken(), searchDo)
                     .subscribe(body -> {
                         Log.d(TAG, body.toString());
                         if (body.getErrorCode() == 0) {
-                            ApiFaceSearchDto.User user = body.getResult().getUserList().get(0);
+                            BaiduFaceSearchDto.User user = body.getResult().getUserList().get(0);
                             textView.setText(user.getUserId() + " 相似度: " + user.getScore());
                         }
                     }, throwable -> {
