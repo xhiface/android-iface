@@ -1,13 +1,9 @@
 package xyz.zzyitj.iface.activity;
 
-import android.util.Log;
-import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import com.roughike.bottombar.BottomBar;
-import xyz.zzyitj.iface.IFaceApplication;
 import xyz.zzyitj.iface.R;
-import xyz.zzyitj.iface.api.BaiduAuthService;
 import xyz.zzyitj.iface.fragment.ClockFragment;
 import xyz.zzyitj.iface.fragment.RegisterFragment;
 

@@ -26,6 +26,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.jetbrains.annotations.NotNull;
 import xyz.zzyitj.iface.IFaceApplication;
 import xyz.zzyitj.iface.R;
+import xyz.zzyitj.iface.activity.LoginActivity;
 import xyz.zzyitj.iface.activity.MainActivity;
 import xyz.zzyitj.iface.api.ApiUserService;
 import xyz.zzyitj.iface.api.BaiduApiConst;
@@ -212,10 +213,15 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                                     .subscribe(success -> {
                                         if (success) {
                                             Toast.makeText(activity, R.string.register_success, Toast.LENGTH_LONG).show();
-                                            IFaceApplication.instance.putUser(apiUserVo);
-                                            // 跳转
-                                            activity.startActivity(new Intent(activity, MainActivity.class));
-                                            activity.finish();
+                                            if (activity instanceof LoginActivity) {
+                                                IFaceApplication.instance.putUser(apiUserVo);
+                                                // 跳转
+                                                activity.startActivity(new Intent(activity, MainActivity.class));
+                                                activity.finish();
+                                            } else if (activity instanceof MainActivity) {
+                                                MainActivity mainActivity = (MainActivity) (activity);
+                                                mainActivity.changeBottomTab(MainActivity.CLOCK_FRAGMENT);
+                                            }
                                         } else {
                                             Toast.makeText(activity, R.string.register_error, Toast.LENGTH_LONG).show();
                                         }
