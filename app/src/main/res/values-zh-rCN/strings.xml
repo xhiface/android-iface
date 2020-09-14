@@ -27,4 +27,5 @@
     <string name="age_format_error">年龄格式错误</string>
     <string name="register_success">用户注册成功</string>
     <string name="registering">注册中...</string>
+    <string name="api_register_error">服务器用户注册错误</string>
 </resources>

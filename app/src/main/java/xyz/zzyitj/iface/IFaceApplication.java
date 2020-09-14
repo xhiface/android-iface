@@ -3,7 +3,10 @@ package xyz.zzyitj.iface;
 import android.app.Application;
 import android.content.SharedPreferences;
 import android.util.Log;
+import com.google.gson.Gson;
+import xyz.zzyitj.iface.api.ApiConst;
 import xyz.zzyitj.iface.api.BaiduApiConst;
+import xyz.zzyitj.iface.model.ApiUserVo;
 import xyz.zzyitj.iface.model.BaiduTokenDto;
 
 /**
@@ -39,9 +42,9 @@ public class IFaceApplication extends Application {
      * @param value value
      * @param <T>   类型
      */
-    public <T> void putApiLocalStorage(String key, T value) {
+    public <T> void putLocalStorage(String sharedPrefsName, String key, T value) {
         Log.d(TAG, "put: " + key + ", value: " + value);
-        SharedPreferences sp = this.getSharedPreferences(BaiduApiConst.SHARED_PREFS_NAME, MODE_PRIVATE);
+        SharedPreferences sp = this.getSharedPreferences(sharedPrefsName, MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         if (value instanceof Long) {
             editor.putLong(key, (Long) value);
@@ -63,12 +66,13 @@ public class IFaceApplication extends Application {
      * @param <T>    类型
      * @return 数据
      */
-    public <T> Object getApiLocalStorage(String key, Class<T> tClass) {
-        SharedPreferences sp = this.getSharedPreferences(BaiduApiConst.SHARED_PREFS_NAME, MODE_PRIVATE);
+    public <T> T getLocalStorage(String sharedPrefsName, String key, Class<T> tClass) {
+        SharedPreferences sp = this.getSharedPreferences(sharedPrefsName, MODE_PRIVATE);
         if (tClass == Long.class) {
-            return sp.getLong(key, -1);
+            Object o = sp.getLong(key, -1);
+            return (T) o;
         }
-        return sp.getString(key, null);
+        return (T) sp.getString(key, null);
     }
 
     /**
@@ -76,10 +80,20 @@ public class IFaceApplication extends Application {
      *
      * @param key key
      */
-    public void removeApiLocalStorage(String key) {
-        SharedPreferences sp = this.getSharedPreferences(BaiduApiConst.SHARED_PREFS_NAME, MODE_PRIVATE);
+    public void removeLocalStorage(String sharedPrefsName, String key) {
+        SharedPreferences sp = this.getSharedPreferences(sharedPrefsName, MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.remove(key);
+    }
+
+    public void putUser(ApiUserVo userVo) {
+        String json = new Gson().toJson(userVo);
+        putLocalStorage(ApiConst.SHARED_PREFS_NAME, ApiConst.SHARED_PREFS_USER, json);
+    }
+
+    public ApiUserVo getUser() {
+        String data = getLocalStorage(ApiConst.SHARED_PREFS_NAME, ApiConst.SHARED_PREFS_USER, String.class);
+        return new Gson().fromJson(data, ApiUserVo.class);
     }
 
     /**
@@ -91,12 +105,14 @@ public class IFaceApplication extends Application {
      */
     public String getApiToken() {
         if (apiToken == null) {
-            String tempToken = (String) getApiLocalStorage(BaiduApiConst.SHARED_PREFS_TOKEN, String.class);
+            String tempToken = getLocalStorage(BaiduApiConst.SHARED_PREFS_NAME,
+                    BaiduApiConst.SHARED_PREFS_TOKEN, String.class);
             if (tempToken == null) {
                 return null;
             } else {
                 long nowTime = System.currentTimeMillis();
-                long expiresTime = (long) getApiLocalStorage(BaiduApiConst.SHARED_PREFS_TOKEN_EXPIRES, Long.class);
+                long expiresTime = getLocalStorage(BaiduApiConst.SHARED_PREFS_NAME,
+                        BaiduApiConst.SHARED_PREFS_TOKEN_EXPIRES, Long.class);
                 // 检查当前时间是否超过token过期时间
                 if (nowTime > expiresTime) {
                     return null;
@@ -115,9 +131,9 @@ public class IFaceApplication extends Application {
      */
     public void setApiToken(BaiduTokenDto apiToken) {
         this.apiToken = apiToken.getAccessToken();
-        putApiLocalStorage(BaiduApiConst.SHARED_PREFS_TOKEN, apiToken.getAccessToken());
+        putLocalStorage(BaiduApiConst.SHARED_PREFS_NAME, BaiduApiConst.SHARED_PREFS_TOKEN, apiToken.getAccessToken());
         // 构造过期时间
         long expiresTime = System.currentTimeMillis() + (apiToken.getExpiresIn() * 1000);
-        putApiLocalStorage(BaiduApiConst.SHARED_PREFS_TOKEN_EXPIRES, expiresTime);
+        putLocalStorage(BaiduApiConst.SHARED_PREFS_NAME, BaiduApiConst.SHARED_PREFS_TOKEN_EXPIRES, expiresTime);
     }
 }

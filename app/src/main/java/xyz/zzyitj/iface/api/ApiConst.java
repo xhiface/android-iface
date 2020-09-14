@@ -10,8 +10,9 @@ package xyz.zzyitj.iface.api;
 public class ApiConst {
     private static final String IP = "139.224.119.162";
     private static final int PORT = 8080;
-    public static final String BASE_URL = ApiConst.IP + ":" + ApiConst.PORT;
-
+    public static final String HOST = "http://" + ApiConst.IP + ":" + ApiConst.PORT;
+    public static final String SHARED_PREFS_NAME = "api_shared_prefs";
+    public static final String SHARED_PREFS_USER = "user";
     /**
      * auth
      */

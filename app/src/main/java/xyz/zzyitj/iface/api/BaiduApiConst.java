@@ -25,7 +25,7 @@ public class BaiduApiConst {
     /**
      * shared_prefs
      */
-    public static final String SHARED_PREFS_NAME = "api_shared_prefs";
+    public static final String SHARED_PREFS_NAME = "baidu_api_shared_prefs";
     public static final String SHARED_PREFS_TOKEN = "token";
     public static final String SHARED_PREFS_TOKEN_EXPIRES = "token_expires";
     /**

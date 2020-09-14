@@ -21,9 +21,9 @@ import java.util.Objects;
  * @since 1.0
  */
 public class ApiUserService {
-    public static Observable<ApiUserRegisterDto> register(ApiUserVo apiUserVo) {
-        return Observable.create((ObservableEmitter<ApiUserRegisterDto> emitter) -> {
-            HttpUrl.Builder urlBuilder = Objects.requireNonNull(HttpUrl.parse(ApiConst.BASE_URL + ApiConst.LOGIN))
+    public static Observable<Boolean> register(ApiUserVo apiUserVo) {
+        return Observable.create((ObservableEmitter<Boolean> emitter) -> {
+            HttpUrl.Builder urlBuilder = Objects.requireNonNull(HttpUrl.parse(ApiConst.HOST + ApiConst.REGISTER_USER))
                     .newBuilder();
             Request.Builder requestBuilder = new Request.Builder();
             String data = new Gson().toJson(apiUserVo);
@@ -40,8 +40,7 @@ public class ApiUserService {
                 @Override
                 public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                     String body = Objects.requireNonNull(response.body()).string();
-                    ApiUserRegisterDto apiUserRegisterDto = new Gson().fromJson(body, ApiUserRegisterDto.class);
-                    emitter.onNext(apiUserRegisterDto);
+                    emitter.onNext(Boolean.valueOf(body));
                     emitter.onComplete();
                 }
             });

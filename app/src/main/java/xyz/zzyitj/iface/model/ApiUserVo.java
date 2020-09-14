@@ -16,7 +16,6 @@ import lombok.ToString;
 @ToString
 public class ApiUserVo {
     private String groupId;
-    private String faceId;
     private String email;
     private String phoneNumber;
     private String username;

@@ -27,6 +27,7 @@ import org.jetbrains.annotations.NotNull;
 import xyz.zzyitj.iface.IFaceApplication;
 import xyz.zzyitj.iface.R;
 import xyz.zzyitj.iface.activity.MainActivity;
+import xyz.zzyitj.iface.api.ApiUserService;
 import xyz.zzyitj.iface.api.BaiduApiConst;
 import xyz.zzyitj.iface.api.BaiduFaceService;
 import xyz.zzyitj.iface.model.ApiUserVo;
@@ -204,15 +205,31 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
             isRegistering = true;
             BaiduFaceService.addUser(IFaceApplication.instance.getApiToken(), baiduFaceUserAddVo)
                     .subscribe(body -> {
+                        Log.d(TAG, apiUserVo.toString());
                         if (body.getErrorCode() == 0) {
                             // 百度注册成功
-                            Toast.makeText(activity, R.string.register_success, Toast.LENGTH_LONG).show();
-                            apiUserVo.setFaceId(body.getResult().getFaceToken());
-                            // 跳转
-                            Log.d(TAG, apiUserVo.toString());
-                            activity.startActivity(new Intent(activity, MainActivity.class));
+                            ApiUserService.register(apiUserVo)
+                                    .subscribe(success -> {
+                                        if (success) {
+                                            Toast.makeText(activity, R.string.register_success, Toast.LENGTH_LONG).show();
+                                            IFaceApplication.instance.putUser(apiUserVo);
+                                            // 跳转
+                                            activity.startActivity(new Intent(activity, MainActivity.class));
+                                            activity.finish();
+                                        } else {
+                                            Toast.makeText(activity, R.string.register_error, Toast.LENGTH_LONG).show();
+                                        }
+                                        progressDialog.dismiss();
+                                        isRegistering = false;
+                                    }, throwable -> {
+                                        Toast.makeText(activity, R.string.api_register_error, Toast.LENGTH_LONG).show();
+                                        Log.e(TAG, "registerUser: ", throwable);
+                                        progressDialog.dismiss();
+                                        isRegistering = false;
+                                    });
+                        } else {
+                            Toast.makeText(activity, R.string.register_error, Toast.LENGTH_LONG).show();
                         }
-                        progressDialog.dismiss();
                     }, throwable -> {
                         Toast.makeText(activity, R.string.register_error, Toast.LENGTH_LONG).show();
                         Log.e(TAG, getString(R.string.register_error), throwable);

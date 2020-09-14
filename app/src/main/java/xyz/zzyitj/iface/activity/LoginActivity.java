@@ -1,5 +1,6 @@
 package xyz.zzyitj.iface.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -11,6 +12,7 @@ import xyz.zzyitj.iface.R;
 import xyz.zzyitj.iface.api.BaiduAuthService;
 import xyz.zzyitj.iface.fragment.LoginFragment;
 import xyz.zzyitj.iface.fragment.RegisterFragment;
+import xyz.zzyitj.iface.model.ApiUserVo;
 
 /**
  * xyz.zzyitj.iface.activity
@@ -33,8 +35,17 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(@Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        init();
         initViews();
         initToken();
+    }
+
+    private void init() {
+        ApiUserVo apiUserVo = IFaceApplication.instance.getUser();
+        if (apiUserVo != null) {
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        }
     }
 
     private void initViews() {
