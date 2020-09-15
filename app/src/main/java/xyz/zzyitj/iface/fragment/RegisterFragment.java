@@ -210,13 +210,13 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                         if (body.getErrorCode() == 0) {
                             // 百度注册成功
                             ApiUserService.register(apiUserVo)
-                                    .subscribe(success -> {
+                                    .subscribe(apiUserDto -> {
                                         progressDialog.dismiss();
                                         isRegistering = false;
-                                        if (success) {
+                                        if (apiUserDto != null && apiUserDto.getRole() != null) {
                                             Toast.makeText(activity, R.string.register_success, Toast.LENGTH_LONG).show();
                                             if (activity instanceof LoginActivity) {
-                                                IFaceApplication.instance.putUser(apiUserVo);
+                                                IFaceApplication.instance.putUser(apiUserDto);
                                                 // 跳转
                                                 activity.startActivity(new Intent(activity, MainActivity.class));
                                                 activity.finish();

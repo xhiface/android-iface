@@ -8,6 +8,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
+import xyz.zzyitj.iface.model.ApiUserDto;
 import xyz.zzyitj.iface.model.ApiUserLoginVo;
 import xyz.zzyitj.iface.model.ApiUserVo;
 
@@ -26,8 +27,8 @@ import java.util.Objects;
 public class ApiUserService {
     private static final String TAG = ApiUserService.class.getSimpleName();
 
-    public static Observable<Boolean> register(ApiUserVo apiUserVo) {
-        return Observable.create((ObservableEmitter<Boolean> emitter) -> {
+    public static Observable<ApiUserDto> register(ApiUserVo apiUserVo) {
+        return Observable.create((ObservableEmitter<ApiUserDto> emitter) -> {
             HttpUrl.Builder urlBuilder = Objects.requireNonNull(HttpUrl.parse(ApiConst.HOST + ApiConst.REGISTER_USER))
                     .newBuilder();
             Request.Builder requestBuilder = new Request.Builder();
@@ -45,7 +46,8 @@ public class ApiUserService {
                 @Override
                 public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                     String body = Objects.requireNonNull(response.body()).string();
-                    emitter.onNext(Boolean.valueOf(body));
+                    Log.d(TAG, "onResponse: " + body);
+                    emitter.onNext(new Gson().fromJson(body, ApiUserDto.class));
                     emitter.onComplete();
                 }
             });
@@ -53,8 +55,8 @@ public class ApiUserService {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public static Observable<ApiUserVo> login(ApiUserLoginVo apiUserLoginVo) {
-        return Observable.create((ObservableEmitter<ApiUserVo> emitter) -> {
+    public static Observable<ApiUserDto> login(ApiUserLoginVo apiUserLoginVo) {
+        return Observable.create((ObservableEmitter<ApiUserDto> emitter) -> {
             HttpUrl.Builder urlBuilder = Objects.requireNonNull(HttpUrl.parse(ApiConst.HOST + ApiConst.LOGIN))
                     .newBuilder();
             Request.Builder requestBuilder = new Request.Builder();
@@ -73,7 +75,7 @@ public class ApiUserService {
                 public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                     String body = Objects.requireNonNull(response.body()).string();
                     Log.d(TAG, "onResponse: " + body);
-                    emitter.onNext(new Gson().fromJson(body, ApiUserVo.class));
+                    emitter.onNext(new Gson().fromJson(body, ApiUserDto.class));
                     emitter.onComplete();
                 }
             });
@@ -81,8 +83,8 @@ public class ApiUserService {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public static Observable<ApiUserVo> getUserFromPhoneNumber(String phoneNumber) {
-        return Observable.create((ObservableEmitter<ApiUserVo> emitter) -> {
+    public static Observable<ApiUserDto> getUserFromPhoneNumber(String phoneNumber) {
+        return Observable.create((ObservableEmitter<ApiUserDto> emitter) -> {
             HttpUrl.Builder urlBuilder = Objects.requireNonNull(HttpUrl.parse(ApiConst.HOST + ApiConst.GET_USER_FROM_PHONE_NUMBER))
                     .newBuilder();
             Request.Builder requestBuilder = new Request.Builder();
@@ -102,7 +104,8 @@ public class ApiUserService {
                 @Override
                 public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                     String body = Objects.requireNonNull(response.body()).string();
-                    emitter.onNext(new Gson().fromJson(body, ApiUserVo.class));
+                    Log.d(TAG, "onResponse: " + body);
+                    emitter.onNext(new Gson().fromJson(body, ApiUserDto.class));
                     emitter.onComplete();
                 }
             });

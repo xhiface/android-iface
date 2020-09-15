@@ -6,6 +6,7 @@ import android.util.Log;
 import com.google.gson.Gson;
 import xyz.zzyitj.iface.api.ApiConst;
 import xyz.zzyitj.iface.api.BaiduApiConst;
+import xyz.zzyitj.iface.model.ApiUserDto;
 import xyz.zzyitj.iface.model.ApiUserVo;
 import xyz.zzyitj.iface.model.BaiduTokenDto;
 
@@ -87,8 +88,8 @@ public class IFaceApplication extends Application {
         editor.apply();
     }
 
-    public void putUser(ApiUserVo userVo) {
-        String json = new Gson().toJson(userVo);
+    public void putUser(ApiUserDto apiUserDto) {
+        String json = new Gson().toJson(apiUserDto);
         putLocalStorage(ApiConst.SHARED_PREFS_NAME, ApiConst.SHARED_PREFS_USER, json);
     }
 

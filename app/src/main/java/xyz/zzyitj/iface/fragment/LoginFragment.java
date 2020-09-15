@@ -29,10 +29,7 @@ import xyz.zzyitj.iface.activity.MainActivity;
 import xyz.zzyitj.iface.api.ApiUserService;
 import xyz.zzyitj.iface.api.BaiduApiConst;
 import xyz.zzyitj.iface.api.BaiduFaceService;
-import xyz.zzyitj.iface.model.ApiUserLoginVo;
-import xyz.zzyitj.iface.model.ApiUserVo;
-import xyz.zzyitj.iface.model.BaiduFaceSearchDto;
-import xyz.zzyitj.iface.model.BaiduFaceSearchVo;
+import xyz.zzyitj.iface.model.*;
 import xyz.zzyitj.iface.ui.ProgressDialog;
 import xyz.zzyitj.iface.util.RegexUtils;
 
@@ -72,9 +69,9 @@ public class LoginFragment extends Fragment {
                             BaiduFaceSearchDto.User user = body.getResult().getUserList().get(0);
                             if (user.getScore() > BaiduApiConst.SAME_USER_MIN_SCORE) {
                                 ApiUserService.getUserFromPhoneNumber(user.getUserId())
-                                        .subscribe(apiUserVo -> {
-                                            Log.d(TAG, "onPictureTaken: " + apiUserVo.toString());
-                                            userLoginSuccess(apiUserVo);
+                                        .subscribe(apiUserDto -> {
+                                            Log.d(TAG, "onPictureTaken: " + apiUserDto.toString());
+                                            userLoginSuccess(apiUserDto);
                                         }, throwable -> {
                                             Toast.makeText(getActivity(), R.string.login_error, Toast.LENGTH_LONG).show();
                                             progressDialog.dismiss();
@@ -168,7 +165,7 @@ public class LoginFragment extends Fragment {
                 });
     }
 
-    private void userLoginSuccess(ApiUserVo apiUserVo) {
+    private void userLoginSuccess(ApiUserDto apiUserVo) {
         if (apiUserVo != null) {
             // 登录成功
             IFaceApplication.instance.putUser(apiUserVo);
