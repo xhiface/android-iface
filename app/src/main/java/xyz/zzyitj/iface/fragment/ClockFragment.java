@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,6 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import xyz.zzyitj.iface.IFaceApplication;
 import xyz.zzyitj.iface.R;
 import xyz.zzyitj.iface.activity.MainActivity;
+import xyz.zzyitj.iface.api.ApiClockService;
 import xyz.zzyitj.iface.api.BaiduApiConst;
 import xyz.zzyitj.iface.api.BaiduFaceService;
 import xyz.zzyitj.iface.model.BaiduFaceSearchVo;
@@ -43,7 +43,6 @@ public class ClockFragment extends Fragment {
 
     private View rootView;
     private CameraView cameraView;
-    private TextView textView;
     private Button clockButton;
 
     private final MainActivity mainActivity;
@@ -63,11 +62,25 @@ public class ClockFragment extends Fragment {
                         Log.d(TAG, body.toString());
                         if (body.getErrorCode() == 0) {
                             BaiduFaceSearchDto.User user = body.getResult().getUserList().get(0);
-                            textView.setText(user.getUserId() + " 相似度: " + user.getScore());
+                            if (user.getScore() > BaiduApiConst.SAME_USER_MIN_SCORE) {
+                                ApiClockService.addClock(user.getUserId())
+                                        .subscribe(apiClockDto -> {
+                                            Log.d(TAG, "onPictureTaken: " + apiClockDto.toString());
+                                            progressDialog.dismiss();
+                                            Toast.makeText(getActivity(), R.string.clock_success, Toast.LENGTH_LONG).show();
+                                        }, throwable -> {
+                                            Log.e(TAG, "onPictureTaken: ", throwable);
+                                            progressDialog.dismiss();
+                                            Toast.makeText(getActivity(), R.string.clock_error, Toast.LENGTH_LONG).show();
+                                        });
+                            } else {
+                                progressDialog.dismiss();
+                                Toast.makeText(getActivity(), R.string.no_same_face_with_library, Toast.LENGTH_LONG).show();
+                            }
                         } else {
+                            progressDialog.dismiss();
                             Toast.makeText(getActivity(), body.getErrorMsg(), Toast.LENGTH_LONG).show();
                         }
-                        progressDialog.dismiss();
                     }, throwable -> {
                         Log.e(TAG, "onPictureTaken: ", throwable);
                         progressDialog.dismiss();
@@ -109,7 +122,6 @@ public class ClockFragment extends Fragment {
 
     private void initViews(View rootView) {
         cameraView = rootView.findViewById(R.id.fragment_clock_camera);
-        textView = rootView.findViewById(R.id.fragment_clock_hello);
         clockButton = rootView.findViewById(R.id.fragment_clock_button);
         cameraView.addCallback(cameraViewCallback);
         cameraView.setFacing(CameraView.FACING_FRONT);

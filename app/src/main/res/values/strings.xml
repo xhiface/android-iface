@@ -35,4 +35,7 @@
     <string name="face_login">Face login.</string>
     <string name="login_fail">Phone number or password error.</string>
     <string name="no_same_face_with_library">There is no such user in the face database.</string>
+    <string name="clock_success">Clock success.</string>
+    <string name="clock_error">Clock error.</string>
+    <string name="clock_fail">Clock fail.</string>
 </resources>

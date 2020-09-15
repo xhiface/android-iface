@@ -36,4 +36,7 @@
     <string name="face_login">人脸登录</string>
     <string name="login_fail">手机号或密码错误</string>
     <string name="no_same_face_with_library">人脸库没有该用户</string>
+    <string name="clock_success">打卡成功</string>
+    <string name="clock_error">打卡错误</string>
+    <string name="clock_fail">打卡失败</string>
 </resources>

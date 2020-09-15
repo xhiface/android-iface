@@ -12,7 +12,7 @@ import xyz.zzyitj.iface.R;
 import xyz.zzyitj.iface.api.BaiduAuthService;
 import xyz.zzyitj.iface.fragment.LoginFragment;
 import xyz.zzyitj.iface.fragment.RegisterFragment;
-import xyz.zzyitj.iface.model.ApiUserVo;
+import xyz.zzyitj.iface.model.ApiUserDto;
 
 /**
  * xyz.zzyitj.iface.activity
@@ -41,8 +41,8 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void init() {
-        ApiUserVo apiUserVo = IFaceApplication.instance.getUser();
-        if (apiUserVo != null) {
+        ApiUserDto apiUserDto = IFaceApplication.instance.getUser();
+        if (apiUserDto != null) {
             startActivity(new Intent(this, MainActivity.class));
             finish();
         }

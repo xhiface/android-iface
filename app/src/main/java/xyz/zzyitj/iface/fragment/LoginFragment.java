@@ -156,9 +156,7 @@ public class LoginFragment extends Fragment {
             apiUserLoginVo.setPassword(passwordEditText.getText().toString());
         }
         ApiUserService.login(apiUserLoginVo)
-                .subscribe(apiUserVo -> {
-                    userLoginSuccess(apiUserVo);
-                }, throwable -> {
+                .subscribe(this::userLoginSuccess, throwable -> {
                     Log.e(TAG, "userLogin: ", throwable);
                     Toast.makeText(getActivity(), R.string.login_error, Toast.LENGTH_LONG).show();
                     progressDialog.dismiss();

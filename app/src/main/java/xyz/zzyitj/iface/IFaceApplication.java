@@ -26,6 +26,8 @@ public class IFaceApplication extends Application {
      */
     private String apiToken;
 
+    private ApiUserDto userDto;
+
     public IFaceApplication() {
         instance = this;
     }
@@ -91,11 +93,20 @@ public class IFaceApplication extends Application {
     public void putUser(ApiUserDto apiUserDto) {
         String json = new Gson().toJson(apiUserDto);
         putLocalStorage(ApiConst.SHARED_PREFS_NAME, ApiConst.SHARED_PREFS_USER, json);
+        this.userDto = apiUserDto;
     }
 
-    public ApiUserVo getUser() {
+    public ApiUserDto getUser() {
         String data = getLocalStorage(ApiConst.SHARED_PREFS_NAME, ApiConst.SHARED_PREFS_USER, String.class);
-        return new Gson().fromJson(data, ApiUserVo.class);
+        ApiUserDto apiUserDto = new Gson().fromJson(data, ApiUserDto.class);
+        if (apiUserDto != null) {
+            this.userDto = apiUserDto;
+        }
+        return apiUserDto;
+    }
+
+    public void removeUser() {
+        removeLocalStorage(ApiConst.SHARED_PREFS_NAME, ApiConst.SHARED_PREFS_USER);
     }
 
     /**
@@ -137,5 +148,13 @@ public class IFaceApplication extends Application {
         // 构造过期时间
         long expiresTime = System.currentTimeMillis() + (apiToken.getExpiresIn() * 1000);
         putLocalStorage(BaiduApiConst.SHARED_PREFS_NAME, BaiduApiConst.SHARED_PREFS_TOKEN_EXPIRES, expiresTime);
+    }
+
+    public ApiUserDto getUserDto() {
+        return userDto;
+    }
+
+    public void setUserDto(ApiUserDto userDto) {
+        this.userDto = userDto;
     }
 }

@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
         switch (id) {
             case R.id.action_login_out:
-                IFaceApplication.instance.removeLocalStorage(ApiConst.SHARED_PREFS_NAME, ApiConst.SHARED_PREFS_USER);
+                IFaceApplication.instance.removeUser();
                 startActivity(new Intent(this, LoginActivity.class));
                 finish();
                 break;

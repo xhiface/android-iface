@@ -215,6 +215,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                                         isRegistering = false;
                                         if (apiUserDto != null && apiUserDto.getRole() != null) {
                                             Toast.makeText(activity, R.string.register_success, Toast.LENGTH_LONG).show();
+                                            IFaceApplication.instance.setUserDto(apiUserDto);
                                             if (activity instanceof LoginActivity) {
                                                 IFaceApplication.instance.putUser(apiUserDto);
                                                 // 跳转

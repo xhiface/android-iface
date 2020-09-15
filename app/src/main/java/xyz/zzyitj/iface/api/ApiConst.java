@@ -17,6 +17,13 @@ public class ApiConst {
      * auth
      */
     public static final String LOGIN = "/system/login";
-    public static final String REGISTER_USER = "/user/insertUser";
-    public static final String GET_USER_FROM_PHONE_NUMBER = "/user/selectoneuser";
+    /**
+     * user
+     */
+    public static final String REGISTER_USER = "/user/add-user";
+    public static final String GET_USER_FROM_PHONE_NUMBER = "/user/get-one-user";
+    /**
+     * clock
+     */
+    public static final String ADD_ATTEND = "/attend/add-attend";
 }
