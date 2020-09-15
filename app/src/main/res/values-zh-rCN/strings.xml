@@ -39,4 +39,6 @@
     <string name="clock_success">打卡成功</string>
     <string name="clock_error">打卡错误</string>
     <string name="clock_fail">打卡失败</string>
+    <string name="clock_record">打卡记录</string>
+    <string name="get_attend_record_fail">获取打卡记录失败</string>
 </resources>

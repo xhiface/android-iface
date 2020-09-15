@@ -26,4 +26,5 @@ public class ApiConst {
      * clock
      */
     public static final String ADD_ATTEND = "/attend/add-attend";
+    public static final String USER_ATTEND_RECORD = "/attend/get-one-attend";
 }

@@ -6,11 +6,12 @@ import android.view.MenuItem;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import androidx.fragment.app.FragmentTransaction;
 import com.roughike.bottombar.BottomBar;
 import xyz.zzyitj.iface.IFaceApplication;
 import xyz.zzyitj.iface.R;
-import xyz.zzyitj.iface.api.ApiConst;
 import xyz.zzyitj.iface.fragment.ClockFragment;
+import xyz.zzyitj.iface.fragment.ClockRecordFragment;
 import xyz.zzyitj.iface.fragment.RegisterFragment;
 
 /**
@@ -20,8 +21,10 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
     public static final int CLOCK_FRAGMENT = 0;
     public static final int REGISTER_FRAGMENT = 1;
+    public static final int CLOCK_RECORD_FRAGMENT = 2;
 
     private ClockFragment clockFragment;
+    private ClockRecordFragment clockRecordFragment;
     private RegisterFragment registerFragment;
 
     private BottomBar bottomBar;
@@ -56,11 +59,7 @@ public class MainActivity extends AppCompatActivity {
     private void initViews() {
         clockFragment = new ClockFragment(this);
         registerFragment = new RegisterFragment(this);
-        if (!clockFragment.isAdded()) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.main_content, clockFragment)
-                    .commit();
-        }
+        clockRecordFragment = new ClockRecordFragment();
         bottomBar = findViewById(R.id.main_bottom_bar);
         bottomBar.setOnTabSelectListener(tabId -> {
             switch (tabId) {
@@ -69,6 +68,9 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case R.id.tab_input:
                     changeFragment(REGISTER_FRAGMENT);
+                    break;
+                case R.id.tab_clock_record:
+                    changeFragment(CLOCK_RECORD_FRAGMENT);
                     break;
                 default:
             }
@@ -80,21 +82,39 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void changeFragment(int fragmentId) {
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         switch (fragmentId) {
             case CLOCK_FRAGMENT:
                 if (registerFragment.isAdded()) {
-                    getSupportFragmentManager().beginTransaction()
-                            .remove(registerFragment)
-                            .add(R.id.main_content, clockFragment)
-                            .commit();
+                    fragmentTransaction.remove(registerFragment);
+                }
+                if (clockRecordFragment.isAdded()) {
+                    fragmentTransaction.remove(clockRecordFragment);
+                }
+                if (!clockFragment.isAdded()) {
+                    fragmentTransaction.add(R.id.main_content, clockFragment).commit();
                 }
                 break;
             case REGISTER_FRAGMENT:
                 if (clockFragment.isAdded()) {
-                    getSupportFragmentManager().beginTransaction()
-                            .remove(clockFragment)
-                            .add(R.id.main_content, registerFragment)
-                            .commit();
+                    fragmentTransaction.remove(clockFragment);
+                }
+                if (clockRecordFragment.isAdded()) {
+                    fragmentTransaction.remove(clockRecordFragment);
+                }
+                if (!registerFragment.isAdded()) {
+                    fragmentTransaction.add(R.id.main_content, registerFragment).commit();
+                }
+                break;
+            case CLOCK_RECORD_FRAGMENT:
+                if (clockFragment.isAdded()) {
+                    fragmentTransaction.remove(clockFragment);
+                }
+                if (registerFragment.isAdded()) {
+                    fragmentTransaction.remove(registerFragment);
+                }
+                if (!clockRecordFragment.isAdded()) {
+                    fragmentTransaction.add(R.id.main_content, clockRecordFragment).commit();
                 }
                 break;
             default:

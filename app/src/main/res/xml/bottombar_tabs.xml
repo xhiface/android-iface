@@ -6,4 +6,8 @@
     <tab
             id="@+id/tab_input"
             title="@string/input"/>
+
+    <tab
+            id="@+id/tab_clock_record"
+            title="@string/clock_record"/>
 </tabs>
