@@ -1,6 +1,7 @@
 package xyz.zzyitj.iface.fragment;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -20,7 +21,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import com.google.android.cameraview.CameraView;
-import io.reactivex.disposables.Disposable;
 import org.apache.commons.codec.binary.Base64;
 import org.jetbrains.annotations.NotNull;
 import xyz.zzyitj.iface.IFaceApplication;
@@ -58,25 +58,31 @@ public class LoginFragment extends Fragment {
     private ProgressDialog progressDialog;
 
     private final CameraView.Callback cameraViewCallback = new CameraView.Callback() {
+        @SuppressLint("CheckResult")
         @Override
         public void onPictureTaken(CameraView cameraView, byte[] data) {
             BaiduFaceSearchVo searchDo = new BaiduFaceSearchVo();
             searchDo.setImageType(BaiduApiConst.IMAGE_TYPE_BASE_64);
             searchDo.setImage(Base64.encodeBase64String(data));
             searchDo.setGroupIdList(BaiduApiConst.DEFAULT_GROUP);
-            Disposable disposable = BaiduFaceService.searchUser(IFaceApplication.instance.getApiToken(), searchDo)
+            BaiduFaceService.searchUser(IFaceApplication.instance.getApiToken(), searchDo)
                     .subscribe(body -> {
                         Log.d(TAG, body.toString());
                         if (body.getErrorCode() == 0) {
                             BaiduFaceSearchDto.User user = body.getResult().getUserList().get(0);
-                            ApiUserService.getUserFromPhoneNumber(user.getUserId())
-                                    .subscribe(apiUserVo -> {
-                                        Log.d(TAG, "onPictureTaken: " + apiUserVo.toString());
-                                        userLoginSuccess(apiUserVo);
-                                    }, throwable -> {
-                                        Toast.makeText(getActivity(), R.string.login_error, Toast.LENGTH_LONG).show();
-                                        progressDialog.dismiss();
-                                    });
+                            if (user.getScore() > BaiduApiConst.SAME_USER_MIN_SCORE) {
+                                ApiUserService.getUserFromPhoneNumber(user.getUserId())
+                                        .subscribe(apiUserVo -> {
+                                            Log.d(TAG, "onPictureTaken: " + apiUserVo.toString());
+                                            userLoginSuccess(apiUserVo);
+                                        }, throwable -> {
+                                            Toast.makeText(getActivity(), R.string.login_error, Toast.LENGTH_LONG).show();
+                                            progressDialog.dismiss();
+                                        });
+                            } else {
+                                progressDialog.dismiss();
+                                Toast.makeText(getActivity(), R.string.no_same_face_with_library, Toast.LENGTH_LONG).show();
+                            }
                         } else {
                             progressDialog.dismiss();
                             Toast.makeText(getActivity(), body.getErrorMsg(), Toast.LENGTH_LONG).show();

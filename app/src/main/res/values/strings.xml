@@ -34,4 +34,5 @@
     <string name="login_success">Login success.</string>
     <string name="face_login">Face login.</string>
     <string name="login_fail">Phone number or password error.</string>
+    <string name="no_same_face_with_library">There is no such user in the face database.</string>
 </resources>

@@ -35,4 +35,5 @@ public class BaiduApiConst {
     public static final String IMAGE_TYPE_BASE_64 = "BASE64";
     public static final String FACE_ADD_USER = "/rest/2.0/face/v3/faceset/user/add";
     public static final String FACE_SEARCH_USER = "/rest/2.0/face/v3/search";
+    public static final float SAME_USER_MIN_SCORE = 80.0F;
 }
