@@ -33,7 +33,6 @@
                 android:ems="10"
                 android:hint="@string/phone_number"
                 android:inputType="phone"
-                android:text="18222222222"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -41,7 +40,6 @@
                 android:id="@+id/fragment_register_email"
                 android:ems="10"
                 android:hint="@string/email"
-                android:text="1428658308@qq.com"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
@@ -54,7 +52,6 @@
                     android:id="@+id/fragment_register_user_name"
                     android:ems="5"
                     android:hint="@string/user_name"
-                    android:text="intent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
@@ -63,7 +60,6 @@
                     android:ems="3"
                     android:inputType="number"
                     android:hint="@string/age"
-                    android:text="23"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
@@ -80,7 +76,6 @@
                 android:ems="10"
                 android:hint="@string/password"
                 android:inputType="textPassword"
-                android:text="123456ab"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 

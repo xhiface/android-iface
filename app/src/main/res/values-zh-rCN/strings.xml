@@ -10,7 +10,7 @@
     <string name="user_name">姓名</string>
     <string name="input_success">录入成功</string>
     <string name="input_error">录入错误</string>
-    <string name="login">登录</string>
+    <string name="login_in">登录</string>
     <string name="register">注册</string>
     <string name="email">Email</string>
     <string name="password">密码</string>
@@ -29,4 +29,10 @@
     <string name="registering">注册中...</string>
     <string name="api_register_error">服务器用户注册错误</string>
     <string name="clocking">打卡中...</string>
+    <string name="logging">登录中...</string>
+    <string name="login_error">登录错误</string>
+    <string name="login_out">退出登录</string>
+    <string name="login_success">登录成功</string>
+    <string name="face_login">人脸登录</string>
+    <string name="login_fail">手机号或密码错误</string>
 </resources>

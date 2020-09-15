@@ -84,6 +84,7 @@ public class IFaceApplication extends Application {
         SharedPreferences sp = this.getSharedPreferences(sharedPrefsName, MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.remove(key);
+        editor.apply();
     }
 
     public void putUser(ApiUserVo userVo) {

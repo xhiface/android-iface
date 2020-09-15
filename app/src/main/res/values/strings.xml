@@ -9,7 +9,7 @@
     <string name="user_name">User name</string>
     <string name="input_success">Input success</string>
     <string name="input_error">Input error</string>
-    <string name="login">Login</string>
+    <string name="login_in">Login</string>
     <string name="register">Register</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
@@ -28,4 +28,10 @@
     <string name="registering">Registering...</string>
     <string name="api_register_error">Api register error.</string>
     <string name="clocking">Clocking...</string>
+    <string name="logging">Logging in</string>
+    <string name="login_error">Login error.</string>
+    <string name="login_out">Login out.</string>
+    <string name="login_success">Login success.</string>
+    <string name="face_login">Face login.</string>
+    <string name="login_fail">Phone number or password error.</string>
 </resources>

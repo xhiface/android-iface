@@ -64,10 +64,12 @@ public class ClockFragment extends Fragment {
                         if (body.getErrorCode() == 0) {
                             BaiduFaceSearchDto.User user = body.getResult().getUserList().get(0);
                             textView.setText(user.getUserId() + " 相似度: " + user.getScore());
+                        } else {
+                            Toast.makeText(getActivity(), body.getErrorMsg(), Toast.LENGTH_LONG).show();
                         }
                         progressDialog.dismiss();
                     }, throwable -> {
-                        Toast.makeText(getActivity(), "error", Toast.LENGTH_LONG).show();
+                        Log.e(TAG, "onPictureTaken: ", throwable);
                         progressDialog.dismiss();
                     });
         }

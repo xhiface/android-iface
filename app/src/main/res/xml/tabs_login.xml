@@ -2,7 +2,7 @@
 <tabs xmlns:android="http://schemas.android.com/apk/res/android">
     <tab
             id="@+id/tab_login"
-            title="@string/login"/>
+            title="@string/login_in"/>
     <tab
             id="@+id/tab_register"
             title="@string/register"/>

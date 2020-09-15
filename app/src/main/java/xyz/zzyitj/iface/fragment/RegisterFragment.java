@@ -211,6 +211,8 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                             // 百度注册成功
                             ApiUserService.register(apiUserVo)
                                     .subscribe(success -> {
+                                        progressDialog.dismiss();
+                                        isRegistering = false;
                                         if (success) {
                                             Toast.makeText(activity, R.string.register_success, Toast.LENGTH_LONG).show();
                                             if (activity instanceof LoginActivity) {
@@ -225,8 +227,6 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                                         } else {
                                             Toast.makeText(activity, R.string.register_error, Toast.LENGTH_LONG).show();
                                         }
-                                        progressDialog.dismiss();
-                                        isRegistering = false;
                                     }, throwable -> {
                                         Toast.makeText(activity, R.string.api_register_error, Toast.LENGTH_LONG).show();
                                         Log.e(TAG, "registerUser: ", throwable);
@@ -234,6 +234,8 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                                         isRegistering = false;
                                     });
                         } else {
+                            progressDialog.dismiss();
+                            isRegistering = false;
                             Toast.makeText(activity, R.string.register_error, Toast.LENGTH_LONG).show();
                         }
                     }, throwable -> {
