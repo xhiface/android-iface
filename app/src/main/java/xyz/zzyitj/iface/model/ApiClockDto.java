@@ -19,6 +19,6 @@ public class ApiClockDto {
     private String username;
     private String phoneNumber;
     private String checkTime;
-    private String type;
-    private String status;
+    private Integer type;
+    private Integer status;
 }

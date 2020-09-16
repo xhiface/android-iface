@@ -1,5 +1,6 @@
 package xyz.zzyitj.iface.api;
 
+import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import io.reactivex.Observable;
@@ -22,6 +23,7 @@ import java.util.Objects;
  * @since 1.0
  */
 public class BaiduFaceService {
+    private static final String TAG = BaiduFaceService.class.getSimpleName();
     public static Observable<BaiduResponseBody<BaiduFaceUserAddDto>> addUser(String accessToken,
                                                                              BaiduFaceUserAddVo userAddDo) {
         HttpUrl.Builder urlBuilder = Objects.requireNonNull(HttpUrl.parse(BaiduApiConst.HOST + BaiduApiConst.FACE_ADD_USER))
@@ -74,6 +76,7 @@ public class BaiduFaceService {
                 @Override
                 public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                     String b = Objects.requireNonNull(response.body()).string();
+                    Log.d(TAG, "onResponse: " + b);
                     Type type = new TypeToken<BaiduResponseBody<BaiduFaceSearchDto>>() {
                     }.getType();
                     BaiduResponseBody<BaiduFaceSearchDto> responseBody = new Gson().fromJson(b, type);

@@ -57,19 +57,19 @@ public class ClockRecordAdapter extends RecyclerView.Adapter<ClockRecordAdapter.
         holder.phoneNumberTextView.setText(apiClockDto.getPhoneNumber());
         holder.checkTimeTextView.setText(apiClockDto.getCheckTime());
         switch (apiClockDto.getType()) {
-            case "1":
+            case 1:
                 holder.typeTextView.setText(R.string.clock_in);
                 break;
-            case "2":
+            case 2:
                 holder.typeTextView.setText(R.string.clock_out);
                 break;
             default:
         }
         switch (apiClockDto.getStatus()) {
-            case "1":
+            case 1:
                 holder.cardView.setBackgroundColor(Color.rgb(136, 191, 39));
                 break;
-            case "2":
+            case 2:
                 holder.cardView.setBackgroundColor(Color.RED);
                 break;
             default:
