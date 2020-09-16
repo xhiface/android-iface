@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import com.google.android.cameraview.AspectRatio;
 import com.google.android.cameraview.CameraView;
 import io.reactivex.disposables.Disposable;
 import org.apache.commons.codec.binary.Base64;
@@ -124,6 +125,7 @@ public class ClockFragment extends Fragment {
         cameraView = rootView.findViewById(R.id.fragment_clock_camera);
         clockButton = rootView.findViewById(R.id.fragment_clock_button);
         cameraView.addCallback(cameraViewCallback);
+        cameraView.setAspectRatio(AspectRatio.of(3, 4));
         cameraView.setFacing(CameraView.FACING_FRONT);
         if (DateUtils.checkNowIsNoon()) {
             clockButton.setText(R.string.clock_out);

@@ -25,8 +25,8 @@
 
             <com.google.android.cameraview.CameraView
                     android:id="@+id/fragment_login_camera"
-                    android:layout_width="200dp"
-                    android:layout_height="150dp"
+                    android:layout_width="225dp"
+                    android:layout_height="300dp"
                     android:adjustViewBounds="true"
                     android:background="@android:color/black"/>
 

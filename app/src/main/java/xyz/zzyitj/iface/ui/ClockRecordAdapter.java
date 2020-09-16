@@ -1,10 +1,12 @@
 package xyz.zzyitj.iface.ui;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatTextView;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 import org.jetbrains.annotations.NotNull;
 import xyz.zzyitj.iface.R;
@@ -54,6 +56,24 @@ public class ClockRecordAdapter extends RecyclerView.Adapter<ClockRecordAdapter.
         holder.usernameTextView.setText(apiClockDto.getUsername());
         holder.phoneNumberTextView.setText(apiClockDto.getPhoneNumber());
         holder.checkTimeTextView.setText(apiClockDto.getCheckTime());
+        switch (apiClockDto.getType()) {
+            case "1":
+                holder.typeTextView.setText(R.string.clock_in);
+                break;
+            case "2":
+                holder.typeTextView.setText(R.string.clock_out);
+                break;
+            default:
+        }
+        switch (apiClockDto.getStatus()) {
+            case "1":
+                holder.cardView.setBackgroundColor(Color.rgb(136, 191, 39));
+                break;
+            case "2":
+                holder.cardView.setBackgroundColor(Color.RED);
+                break;
+            default:
+        }
     }
 
     @Override
@@ -62,15 +82,19 @@ public class ClockRecordAdapter extends RecyclerView.Adapter<ClockRecordAdapter.
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+        CardView cardView;
         AppCompatTextView usernameTextView;
         AppCompatTextView phoneNumberTextView;
         AppCompatTextView checkTimeTextView;
+        AppCompatTextView typeTextView;
 
         public ViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
+            cardView = itemView.findViewById(R.id.clock_record_item_card_view);
             usernameTextView = itemView.findViewById(R.id.clock_record_item_user_name);
             phoneNumberTextView = itemView.findViewById(R.id.clock_record_item_phone_number);
             checkTimeTextView = itemView.findViewById(R.id.clock_record_item_check_time);
+            typeTextView = itemView.findViewById(R.id.clock_record_item_type);
         }
     }
 }

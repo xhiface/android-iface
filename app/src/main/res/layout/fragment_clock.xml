@@ -4,36 +4,26 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
-    <RelativeLayout
+    <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:gravity="center">
 
         <com.google.android.cameraview.CameraView
+                android:layout_margin="16dp"
                 android:id="@+id/fragment_clock_camera"
-                android:layout_width="200dp"
-                android:layout_height="150dp"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="100dp"
+                android:layout_width="300dp"
+                android:layout_height="400dp"
                 android:adjustViewBounds="true"
                 android:background="@android:color/black"/>
 
-        <LinearLayout
-                android:orientation="vertical"
+        <Button
+                android:id="@+id/fragment_clock_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/fragment_clock_camera"
-                android:gravity="center"
-                android:layout_centerHorizontal="true">
+                android:text="@string/clock"/>
 
-            <Button
-                    android:id="@+id/fragment_clock_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/clock"/>
-
-        </LinearLayout>
-
-    </RelativeLayout>
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

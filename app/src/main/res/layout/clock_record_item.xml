@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView
         xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/clock_record_item_card_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
@@ -21,6 +22,8 @@
                     android:id="@+id/clock_record_item_user_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
                     android:text="@string/user_name"/>
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -28,16 +31,35 @@
                     android:layout_alignParentEnd="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
                     android:text="@string/phone_number"/>
 
         </RelativeLayout>
 
-        <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/clock_record_item_check_time"
+        <RelativeLayout
                 android:layout_margin="8dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/clock"/>
+                android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/clock_record_item_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:text="@string/clock_in"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/clock_record_item_check_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:text="@string/clock"/>
+
+        </RelativeLayout>
 
     </LinearLayout>
 

@@ -100,6 +100,15 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
         if (tempBitmap != null) {
             headImageView.setImageBitmap(tempBitmap);
         }
+        clearViewsData();
+    }
+
+    private void clearViewsData() {
+        Objects.requireNonNull(phoneNumberEditText.getText()).clear();
+        Objects.requireNonNull(emailEditText.getText()).clear();
+        Objects.requireNonNull(userNameEditText.getText()).clear();
+        Objects.requireNonNull(ageEditText.getText()).clear();
+        Objects.requireNonNull(passwordEditText.getText()).clear();
     }
 
     private void initViews(View rootView) {

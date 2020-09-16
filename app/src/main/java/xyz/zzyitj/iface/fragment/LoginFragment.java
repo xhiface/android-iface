@@ -20,6 +20,7 @@ import androidx.appcompat.widget.AppCompatEditText;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import com.google.android.cameraview.AspectRatio;
 import com.google.android.cameraview.CameraView;
 import org.apache.commons.codec.binary.Base64;
 import org.jetbrains.annotations.NotNull;
@@ -119,6 +120,7 @@ public class LoginFragment extends Fragment {
                 linearLayout.setVisibility(View.VISIBLE);
             }
         });
+        cameraView.setAspectRatio(AspectRatio.of(3, 4));
         cameraView.addCallback(cameraViewCallback);
         cameraView.setFacing(CameraView.FACING_FRONT);
         loginButton.setOnClickListener(v -> {
