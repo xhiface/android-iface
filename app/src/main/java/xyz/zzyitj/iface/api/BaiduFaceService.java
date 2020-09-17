@@ -45,6 +45,7 @@ public class BaiduFaceService {
                 @Override
                 public void onResponse(@NotNull Call call, @NotNull Response response) throws IOException {
                     String b = Objects.requireNonNull(response.body()).string();
+                    Log.d(TAG, "onResponse: " + b);
                     Type type = new TypeToken<BaiduResponseBody<BaiduFaceUserAddDto>>() {
                     }.getType();
                     BaiduResponseBody<BaiduFaceUserAddDto> responseBody = new Gson().fromJson(b, type);

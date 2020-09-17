@@ -1,5 +1,6 @@
 package xyz.zzyitj.iface.ui;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import java.util.List;
 public class ClockRecordAdapter extends RecyclerView.Adapter<ClockRecordAdapter.ViewHolder> {
 
     private final List<ApiClockDto> apiClockDtoList;
+    private Context context;
 
     public List<ApiClockDto> getApiClockDtoList() {
         return apiClockDtoList;
@@ -38,7 +40,8 @@ public class ClockRecordAdapter extends RecyclerView.Adapter<ClockRecordAdapter.
         this.notifyDataSetChanged();
     }
 
-    public ClockRecordAdapter(List<ApiClockDto> apiClockDtoList) {
+    public ClockRecordAdapter(List<ApiClockDto> apiClockDtoList, Context context) {
+        this.context = context;
         this.apiClockDtoList = apiClockDtoList;
     }
 
@@ -67,10 +70,16 @@ public class ClockRecordAdapter extends RecyclerView.Adapter<ClockRecordAdapter.
         }
         switch (apiClockDto.getStatus()) {
             case 1:
-                holder.cardView.setBackgroundColor(Color.rgb(136, 191, 39));
+                holder.typeTextView.setText(holder.typeTextView.getText().toString() + context.getString(R.string.success));
+                holder.cardView.setBackgroundColor(Color.rgb(0, 158, 64));
                 break;
             case 2:
-                holder.cardView.setBackgroundColor(Color.RED);
+                holder.typeTextView.setText(holder.typeTextView.getText().toString() + context.getString(R.string.late));
+                holder.cardView.setBackgroundColor(Color.rgb(226, 78, 68));
+                break;
+            case 3:
+                holder.typeTextView.setText(holder.typeTextView.getText().toString() + context.getString(R.string.leave_early));
+                holder.cardView.setBackgroundColor(Color.rgb(255, 204, 79));
                 break;
             default:
         }

@@ -246,7 +246,7 @@ public class RegisterFragment extends Fragment implements View.OnClickListener {
                         } else {
                             progressDialog.dismiss();
                             isRegistering = false;
-                            Toast.makeText(activity, R.string.register_error, Toast.LENGTH_LONG).show();
+                            Toast.makeText(activity, R.string.register_error + body.getErrorMsg(), Toast.LENGTH_LONG).show();
                         }
                     }, throwable -> {
                         Toast.makeText(activity, R.string.register_error, Toast.LENGTH_LONG).show();

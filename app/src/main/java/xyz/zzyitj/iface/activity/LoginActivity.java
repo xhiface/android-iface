@@ -3,7 +3,10 @@ package xyz.zzyitj.iface.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import com.roughike.bottombar.BottomBar;
@@ -112,5 +115,26 @@ public class LoginActivity extends AppCompatActivity {
         } else {
             Log.d(TAG, IFaceApplication.instance.getApiToken());
         }
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.login, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.action_switch_login_mode:
+                if (loginFragment.isAdded()){
+                    loginFragment.swapLoginMode();
+                }
+                break;
+            default:
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

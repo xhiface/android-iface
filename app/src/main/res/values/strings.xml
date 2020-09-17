@@ -40,4 +40,8 @@
     <string name="clock_fail">Clock fail.</string>
     <string name="clock_record">Clock record</string>
     <string name="get_attend_record_fail">Get attend record fail.</string>
+    <string name="switch_login_mode">Switch login mode.</string>
+    <string name="success">Success</string>
+    <string name="late">Late</string>
+    <string name="leave_early">Leave early</string>
 </resources>

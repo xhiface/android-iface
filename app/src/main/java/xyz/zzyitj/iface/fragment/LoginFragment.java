@@ -15,7 +15,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
-import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.appcompat.widget.AppCompatEditText;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -46,7 +45,6 @@ public class LoginFragment extends Fragment {
     private static final int REQUEST_CAMERA_PERMISSION = 0;
     private View rootView;
 
-    private AppCompatCheckBox faceLoginCheckBox;
     private CameraView cameraView;
     private LinearLayout linearLayout;
     private AppCompatEditText phoneNumberEditText;
@@ -105,27 +103,17 @@ public class LoginFragment extends Fragment {
 
     private void initViews(View rootView) {
         progressDialog = new ProgressDialog(getActivity(), getString(R.string.logging));
-        faceLoginCheckBox = rootView.findViewById(R.id.fragment_login_face_checkbox);
         cameraView = rootView.findViewById(R.id.fragment_login_camera);
         linearLayout = rootView.findViewById(R.id.fragment_login_linear);
         phoneNumberEditText = rootView.findViewById(R.id.fragment_login_phone_number);
         passwordEditText = rootView.findViewById(R.id.fragment_login_password);
         loginButton = rootView.findViewById(R.id.fragment_login_button);
-        faceLoginCheckBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            if (isChecked) {
-                linearLayout.setVisibility(View.GONE);
-                cameraView.setVisibility(View.VISIBLE);
-            } else {
-                cameraView.setVisibility(View.GONE);
-                linearLayout.setVisibility(View.VISIBLE);
-            }
-        });
         cameraView.setAspectRatio(AspectRatio.of(3, 4));
         cameraView.addCallback(cameraViewCallback);
         cameraView.setFacing(CameraView.FACING_FRONT);
         loginButton.setOnClickListener(v -> {
             progressDialog.show();
-            if (faceLoginCheckBox.isChecked()) {
+            if (linearLayout.getVisibility() == View.GONE) {
                 if (cameraView.isCameraOpened()) {
                     cameraView.takePicture();
                 }
@@ -133,6 +121,16 @@ public class LoginFragment extends Fragment {
                 userLogin();
             }
         });
+    }
+
+    public void swapLoginMode() {
+        if (linearLayout.getVisibility() == View.VISIBLE) {
+            linearLayout.setVisibility(View.GONE);
+            cameraView.setVisibility(View.VISIBLE);
+        } else {
+            cameraView.setVisibility(View.GONE);
+            linearLayout.setVisibility(View.VISIBLE);
+        }
     }
 
     private void userLogin() {

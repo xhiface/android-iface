@@ -8,8 +8,10 @@ package xyz.zzyitj.iface.api;
  * @since 1.0
  */
 public class ApiConst {
+    public static final String DEFAULT_ROLE_USER = "user";
+    public static final String DEFAULT_ROLE_ADMIN = "sysadmin";
     private static final String IP = "139.224.119.162";
-    private static final int PORT = 8080;
+    private static final int PORT = 80;
     public static final String HOST = "http://" + ApiConst.IP + ":" + ApiConst.PORT;
     public static final String SHARED_PREFS_NAME = "api_shared_prefs";
     public static final String SHARED_PREFS_USER = "user";

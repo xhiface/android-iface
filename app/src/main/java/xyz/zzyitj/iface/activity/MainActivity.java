@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.roughike.bottombar.BottomBar;
 import xyz.zzyitj.iface.IFaceApplication;
 import xyz.zzyitj.iface.R;
+import xyz.zzyitj.iface.api.ApiConst;
 import xyz.zzyitj.iface.fragment.ClockFragment;
 import xyz.zzyitj.iface.fragment.ClockRecordFragment;
 import xyz.zzyitj.iface.fragment.RegisterFragment;
@@ -57,10 +58,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initViews() {
-        clockFragment = new ClockFragment(this);
-        registerFragment = new RegisterFragment(this);
-        clockRecordFragment = new ClockRecordFragment();
         bottomBar = findViewById(R.id.main_bottom_bar);
+        clockFragment = new ClockFragment(this);
+        if (ApiConst.DEFAULT_ROLE_ADMIN.equals(IFaceApplication.instance.getUserDto().getRole())) {
+            registerFragment = new RegisterFragment(this);
+            bottomBar.setItems(R.xml.bottombar_tabs);
+        } else {
+            bottomBar.setItems(R.xml.bottombar_tabs_user);
+        }
+        clockRecordFragment = new ClockRecordFragment();
         bottomBar.setOnTabSelectListener(tabId -> {
             switch (tabId) {
                 case R.id.tab_clock:
@@ -85,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         switch (fragmentId) {
             case CLOCK_FRAGMENT:
-                if (registerFragment.isAdded()) {
+                if (registerFragment != null && registerFragment.isAdded()) {
                     fragmentTransaction.remove(registerFragment);
                 }
                 if (clockRecordFragment.isAdded()) {
@@ -102,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
                 if (clockRecordFragment.isAdded()) {
                     fragmentTransaction.remove(clockRecordFragment);
                 }
-                if (!registerFragment.isAdded()) {
+                if (registerFragment != null && !registerFragment.isAdded()) {
                     fragmentTransaction.add(R.id.main_content, registerFragment).commit();
                 }
                 break;
@@ -110,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
                 if (clockFragment.isAdded()) {
                     fragmentTransaction.remove(clockFragment);
                 }
-                if (registerFragment.isAdded()) {
+                if (registerFragment != null && registerFragment.isAdded()) {
                     fragmentTransaction.remove(registerFragment);
                 }
                 if (!clockRecordFragment.isAdded()) {

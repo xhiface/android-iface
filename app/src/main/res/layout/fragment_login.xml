@@ -8,60 +8,47 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+        <com.google.android.cameraview.CameraView
+                android:id="@+id/fragment_login_camera"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:adjustViewBounds="true"
+                android:background="@android:color/black"/>
+
         <LinearLayout
+                android:id="@+id/fragment_login_linear"
                 android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:gravity="center">
+                android:visibility="gone">
 
-
-            <androidx.appcompat.widget.AppCompatCheckBox
-                    android:id="@+id/fragment_login_face_checkbox"
+            <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/fragment_login_phone_number"
+                    android:ems="10"
+                    android:hint="@string/phone_number"
+                    android:inputType="phone"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/face_login"
-                    android:checked="true"/>
+                    android:layout_height="wrap_content"/>
 
-            <com.google.android.cameraview.CameraView
-                    android:id="@+id/fragment_login_camera"
-                    android:layout_width="225dp"
-                    android:layout_height="300dp"
-                    android:adjustViewBounds="true"
-                    android:background="@android:color/black"/>
-
-            <LinearLayout
-                    android:id="@+id/fragment_login_linear"
-                    android:orientation="vertical"
+            <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/fragment_login_password"
+                    android:ems="10"
+                    android:hint="@string/password"
+                    android:inputType="textPassword"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone">
-
-                <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/fragment_login_phone_number"
-                        android:ems="10"
-                        android:hint="@string/phone_number"
-                        android:inputType="phone"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-
-                <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/fragment_login_password"
-                        android:ems="10"
-                        android:hint="@string/password"
-                        android:inputType="textPassword"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-
-            </LinearLayout>
-
-            <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/fragment_login_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/login_in"/>
+                    android:layout_height="wrap_content"/>
 
         </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/fragment_login_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="50dp"
+                android:text="@string/login_in"/>
 
     </RelativeLayout>
 

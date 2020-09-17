@@ -18,7 +18,6 @@ import xyz.zzyitj.iface.api.ApiClockService;
 import xyz.zzyitj.iface.model.ApiClockDto;
 import xyz.zzyitj.iface.ui.ClockRecordAdapter;
 
-import java.lang.reflect.Array;
 import java.util.*;
 
 /**
@@ -60,7 +59,7 @@ public class ClockRecordFragment extends Fragment {
 
     private void initViews(View rootView) {
         apiClockDtoList = new ArrayList<>();
-        clockRecordAdapter = new ClockRecordAdapter(apiClockDtoList);
+        clockRecordAdapter = new ClockRecordAdapter(apiClockDtoList, getActivity());
         recyclerView = rootView.findViewById(R.id.fragment_clock_record_recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
