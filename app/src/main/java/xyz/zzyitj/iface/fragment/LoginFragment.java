@@ -4,17 +4,13 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.BitmapFactory;
-import android.graphics.ImageFormat;
-import android.graphics.Rect;
-import android.graphics.YuvImage;
+import android.graphics.*;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.*;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 import androidx.annotation.NonNull;
@@ -24,7 +20,6 @@ import androidx.appcompat.widget.AppCompatEditText;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
-import com.google.android.cameraview.CameraView;
 import org.apache.commons.codec.binary.Base64;
 import org.jetbrains.annotations.NotNull;
 import xyz.zzyitj.iface.IFaceApplication;
@@ -37,11 +32,11 @@ import xyz.zzyitj.iface.api.BaiduFaceService;
 import xyz.zzyitj.iface.model.*;
 import xyz.zzyitj.iface.ui.ProgressDialog;
 import xyz.zzyitj.iface.util.CameraHelper;
+import xyz.zzyitj.iface.util.CameraUtils;
 import xyz.zzyitj.iface.util.RegexUtils;
 import xyz.zzyitj.iface.util.Utils;
 
 import java.io.*;
-import java.util.Arrays;
 
 /**
  * xyz.zzyitj.iface.fragment
@@ -55,7 +50,6 @@ public class LoginFragment extends Fragment implements SurfaceHolder.Callback, C
     private static final int REQUEST_CAMERA_PERMISSION = 0;
     private View rootView;
 
-    //    private CameraView cameraView;
     private RelativeLayout relativeLayout;
     private AppCompatEditText phoneNumberEditText;
     private AppCompatEditText passwordEditText;
@@ -65,19 +59,12 @@ public class LoginFragment extends Fragment implements SurfaceHolder.Callback, C
 
     private OpencvJni openCvJni;
     private CameraHelper cameraHelper;
-    int cameraId = Camera.CameraInfo.CAMERA_FACING_FRONT;
-
-    private final CameraView.Callback cameraViewCallback = new CameraView.Callback() {
-        @SuppressLint("CheckResult")
-        @Override
-        public void onPictureTaken(CameraView cameraView, byte[] data) {
-            login(data);
-        }
-    };
-    private boolean isLogin = false;
+    private int cameraId = Camera.CameraInfo.CAMERA_FACING_FRONT;
     private SurfaceView surfaceView;
+    private boolean isLogin = false;
 
     private void login(byte[] data) {
+        progressDialog.show();
         BaiduFaceSearchVo searchDo = new BaiduFaceSearchVo();
         searchDo.setImageType(BaiduApiConst.IMAGE_TYPE_BASE_64);
         searchDo.setImage(Base64.encodeBase64String(data));
@@ -132,7 +119,7 @@ public class LoginFragment extends Fragment implements SurfaceHolder.Callback, C
 
     private void initOpenCV(View rootView) {
         openCvJni = new OpencvJni();
-        surfaceView = rootView.findViewById(R.id.surfaceView);
+        surfaceView = rootView.findViewById(R.id.fragment_login_surface_view);
         surfaceView.getHolder().addCallback(this);
         cameraHelper = new CameraHelper(cameraId);
         cameraHelper.setPreviewCallback(this);
@@ -142,16 +129,11 @@ public class LoginFragment extends Fragment implements SurfaceHolder.Callback, C
 
     private void initViews(View rootView) {
         progressDialog = new ProgressDialog(getActivity(), getString(R.string.logging));
-//        cameraView = rootView.findViewById(R.id.fragment_login_camera);
         relativeLayout = rootView.findViewById(R.id.fragment_login_relative);
         phoneNumberEditText = rootView.findViewById(R.id.fragment_login_phone_number);
         passwordEditText = rootView.findViewById(R.id.fragment_login_password);
         loginButton = rootView.findViewById(R.id.fragment_login_button);
-//        cameraView.setAspectRatio(AspectRatio.of(3, 4));
-//        cameraView.addCallback(cameraViewCallback);
-//        cameraView.setFacing(CameraView.FACING_FRONT);
         loginButton.setOnClickListener(v -> {
-            progressDialog.show();
             if (relativeLayout.getVisibility() == View.VISIBLE) {
                 userLogin();
             }
@@ -171,6 +153,7 @@ public class LoginFragment extends Fragment implements SurfaceHolder.Callback, C
     }
 
     private void userLogin() {
+        progressDialog.show();
         ApiUserLoginVo apiUserLoginVo = new ApiUserLoginVo();
         // phone number edittext
         if (TextUtils.isEmpty(phoneNumberEditText.getText())) {
@@ -225,7 +208,6 @@ public class LoginFragment extends Fragment implements SurfaceHolder.Callback, C
     public void onResume() {
         super.onResume();
         startOpenCV();
-//        startCamera();
     }
 
     private void startOpenCV() {
@@ -251,26 +233,8 @@ public class LoginFragment extends Fragment implements SurfaceHolder.Callback, C
     }
 
     private void stopCamera() {
-//        if (cameraView != null) {
-//            cameraView.stop();
-//        }
         cameraHelper.stopPreview();
     }
-
-//    private void startCamera() {
-//        if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA)
-//                == PackageManager.PERMISSION_GRANTED) {
-//            if (cameraView != null) {
-//                cameraView.start();
-//            }
-//        } else if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
-//                Manifest.permission.CAMERA)) {
-//            Toast.makeText(getActivity(), R.string.camera_permission_not_granted, Toast.LENGTH_LONG).show();
-//        } else {
-//            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CAMERA},
-//                    REQUEST_CAMERA_PERMISSION);
-//        }
-//    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode,
@@ -293,49 +257,12 @@ public class LoginFragment extends Fragment implements SurfaceHolder.Callback, C
 
     @Override
     public void onPreviewFrame(byte[] data, Camera camera) {
-//        byte[] faceData = Arrays.copyOf(data, 307200);
-//        Log.d(TAG, "onPreviewFrame: " + faceData.length);
         boolean haveFace = openCvJni.postData(data, CameraHelper.WIDTH, CameraHelper.HEIGHT, cameraId);
         if (haveFace && !isLogin) {
-            progressDialog.show();
             isLogin = true;
-            byte[] faceData = runInPreviewFrame(data, camera);
-//            File file = new File(Environment.getExternalStorageDirectory(), System.currentTimeMillis() + ".jpg");
-//            try {
-//                FileOutputStream fos = new FileOutputStream(file);
-//                fos.write(faceData);
-//                fos.close();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
+            byte[] faceData = CameraUtils.runInPreviewFrame(data, camera);
             login(faceData);
-//            camera.takePicture(null, null, new JpegPictureCallback());
         }
-    }
-
-    public byte[] runInPreviewFrame(byte[] data, Camera camera) {
-        ByteArrayOutputStream baos;
-        byte[] rawImage;
-//        camera.setOneShotPreviewCallback(null);
-        //处理data
-        Camera.Size previewSize = camera.getParameters().getPreviewSize();//获取尺寸,格式转换的时候要用到
-        BitmapFactory.Options newOpts = new BitmapFactory.Options();
-        newOpts.inJustDecodeBounds = true;
-        YuvImage yuvimage = new YuvImage(
-                data,
-                ImageFormat.NV21,
-                previewSize.width,
-                previewSize.height,
-                null);
-        baos = new ByteArrayOutputStream();
-        yuvimage.compressToJpeg(new Rect(0, 0, previewSize.width, previewSize.height), 100, baos);// 80--JPG图片的质量[0-100],100最高
-        rawImage = baos.toByteArray();
-        try {
-            baos.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return rawImage;
     }
 
     @Override

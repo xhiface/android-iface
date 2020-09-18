@@ -8,21 +8,26 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <com.google.android.cameraview.CameraView
-                android:id="@+id/fragment_clock_camera"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:adjustViewBounds="true"
-                android:background="@android:color/black"/>
+        <!--        <com.google.android.cameraview.CameraView-->
+        <!--                android:id="@+id/fragment_clock_camera"-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="match_parent"-->
+        <!--                android:adjustViewBounds="true"-->
+        <!--                android:background="@android:color/black"/>-->
 
-        <Button
-                android:layout_marginBottom="50dp"
-                android:layout_centerHorizontal="true"
-                android:layout_alignParentBottom="true"
-                android:id="@+id/fragment_clock_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/clock"/>
+        <!--        <Button-->
+        <!--                android:layout_marginBottom="50dp"-->
+        <!--                android:layout_centerHorizontal="true"-->
+        <!--                android:layout_alignParentBottom="true"-->
+        <!--                android:id="@+id/fragment_clock_button"-->
+        <!--                android:layout_width="wrap_content"-->
+        <!--                android:layout_height="wrap_content"-->
+        <!--                android:text="@string/clock"/>-->
+
+        <SurfaceView
+                android:id="@+id/fragment_clock_surface_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
 
     </RelativeLayout>
 

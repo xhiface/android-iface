@@ -61,7 +61,7 @@ dependencies {
     // json
     implementation 'com.google.code.gson:gson:2.8.6'
     // camera
-    implementation project(':camera_library')
+//    implementation project(':camera_library')
     // bottombar
     implementation 'com.roughike:bottom-bar:2.3.1'
     // commons
