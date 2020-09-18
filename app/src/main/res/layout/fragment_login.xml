@@ -8,26 +8,32 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-        <com.google.android.cameraview.CameraView
-                android:id="@+id/fragment_login_camera"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:adjustViewBounds="true"
-                android:background="@android:color/black"/>
+        <!--        <com.google.android.cameraview.CameraView-->
+        <!--                android:id="@+id/fragment_login_camera"-->
+        <!--                android:layout_width="match_parent"-->
+        <!--                android:layout_height="match_parent"-->
+        <!--                android:adjustViewBounds="true"-->
+        <!--                android:background="@android:color/black"/>-->
 
-        <LinearLayout
-                android:id="@+id/fragment_login_linear"
+        <SurfaceView
+                android:id="@+id/surfaceView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        <RelativeLayout
+                android:visibility="gone"
+                android:id="@+id/fragment_login_relative"
                 android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:visibility="gone">
+                android:layout_centerInParent="true">
 
             <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/fragment_login_phone_number"
                     android:ems="10"
                     android:hint="@string/phone_number"
                     android:inputType="phone"
+                    android:layout_centerHorizontal="true"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
@@ -36,19 +42,20 @@
                     android:ems="10"
                     android:hint="@string/password"
                     android:inputType="textPassword"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@+id/fragment_login_phone_number"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
-        </LinearLayout>
+            <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/fragment_login_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@+id/fragment_login_password"
+                    android:text="@string/login_in"/>
 
-        <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/fragment_login_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginBottom="50dp"
-                android:text="@string/login_in"/>
+        </RelativeLayout>
 
     </RelativeLayout>
 
